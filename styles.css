@@ -1,5 +1,5 @@
 @media screen and (max-device-width:480px) {
-    label {
+    label, input {
         font-size: 40px;
     }
 }
