@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <title>Модифицированный тест ASSQ</title>
+        <link rel="stylesheet" href="styles.css">
+        <script src="scripts.js"></script>
+        <script>
+            function showResult() {
+                let score = 0;
+                let comment = "";
+
+                score += document.querySelectorAll('input[type="radio"][value="да"]:checked').length;
+                score += document.querySelectorAll('input[type="radio"][value="отчасти"]:checked').length * 0.5;
+
+                score += document.querySelectorAll('input[type="radio"][value="ЗРР"]:checked').length;
+                score += document.querySelectorAll('input[type="radio"][value="ЗПРР"]:checked').length;
+                score += document.querySelectorAll('input[type="radio"][value="дизатрия"]:checked').length * 0.5;
+                score += document.querySelectorAll('input[type="radio"][value="сенсомоторная алалия"]:checked').length * 0.5;
+
+                score += document.querySelectorAll('input[type="radio"][value="полное понимание"]:checked').length;
+                score += document.querySelectorAll('input[type="radio"][value="на бытовом уровне"]:checked').length * 0.5;
+                score += document.querySelectorAll('input[type="radio"][value="другое"]:checked').length * 0.5;
+
+                if (score <= 19) comment = "Это нормальный результат.";
+                else if (score > 19 && score <= 22) comment = "Это повышенный результат.";
+                else comment = "Это высокий результат.";
+
+                document.getElementById("score").innerHTML = score;
+                document.getElementById("comment").innerHTML = comment;
+            }
+
+            function checkPage1() {
+                var re_mail = /^[\w-\.]+@[\w-]+\.[a-z]{2,4}$/i;
+                var re_phone = /^[\d\+][\d\(\)\ -]{4,14}\d$/;
+                var active = (
+                    document.querySelector('#fio').value.length > 3 &&
+                    document.querySelector('#fiochild').value.length > 3 &&
+
+                    document.querySelectorAll('input[type="radio"]:checked').length >= 2 &&
+
+                    document.querySelector('#bday').value &&
+                    document.querySelector('#bdaychild').value &&
+
+                    document.querySelector('#age').value.length > 0 &&
+                    document.querySelector('#agechild').value.length > 0 &&
+
+                    (re_mail.test(document.getElementById("email").value) ||
+                    re_phone.test(document.getElementById("phone").value))
+                );
+
+                document.getElementById('nextButton').disabled = !active;
+                if (active) hideDiv('page1mess');
+                else showDiv('page1mess');
+            }
+            function checkPage2() {
+                var radiochecked = document.querySelectorAll('input[type="radio"][name^="a"]:checked').length;
+                var active = (radiochecked >= 28);
+                document.getElementById('submitButton').disabled = !active;
+                if (active) hideDiv('page2mess');
+                else showDiv('page2mess');
+            }
+            function hideShowAnswers() {
+                var age = document.querySelector('#agechild').value;
+
+                const elems_0_3 = document.querySelectorAll('[data-dest="0-3"]');
+                const elems_0_6 = document.querySelectorAll('[data-dest="0-6"]');
+                const elems_3_6 = document.querySelectorAll('[data-dest="3-6"]');
+                const elems_3_16 = document.querySelectorAll('[data-dest="3-16"]');
+                const elems_6_16 = document.querySelectorAll('[data-dest="6-16"]');
+
+                for (var i = 0; i < elems_0_3.length; i++)  {
+                    
+                    if (age >= 0 && age < 6) elems_0_3[i].style.display = 'none';
+                    if (age >= 3 && age < 6) elems_0_3[i].style.display = 'none';
+                    if (age >= 3 && age < 16) elems_0_3[i].style.display = 'none';
+                    if (age >= 6 && age < 16) elems_0_3[i].style.display = 'none';
+                    if (age >= 0 && age < 3) elems_0_3[i].style.display = 'block';
+                }
+
+                for (var i = 0; i < elems_0_6.length; i++)  {
+                    if (age >= 0 && age < 3) elems_0_6[i].style.display = 'none';
+                    if (age >= 3 && age < 6) elems_0_6[i].style.display = 'none';
+                    if (age >= 3 && age < 16) elems_0_6[i].style.display = 'none';
+                    if (age >= 6 && age < 16) elems_0_6[i].style.display = 'none';
+                    if (age >= 0 && age < 6) elems_0_6[i].style.display = 'block';
+                }
+
+                for (var i = 0; i < elems_3_6.length; i++)  {
+                    if (age >= 0 && age < 3) elems_3_6[i].style.display = 'none';
+                    if (age >= 0 && age < 6) elems_3_6[i].style.display = 'none';
+                    if (age >= 3 && age < 16) elems_3_6[i].style.display = 'none';
+                    if (age >= 6 && age < 16) elems_3_6[i].style.display = 'none';
+                    if (age >= 3 && age < 6) elems_3_6[i].style.display = 'block';
+                }
+
+                for (var i = 0; i < elems_3_16.length; i++)  {
+                    if (age >= 0 && age < 3) elems_3_16[i].style.display = 'none';
+                    if (age >= 0 && age < 6) elems_3_16[i].style.display = 'none';
+                    if (age >= 3 && age < 6) elems_3_16[i].style.display = 'none';
+                    if (age >= 6 && age < 16) elems_3_16[i].style.display = 'none';
+                    if (age >= 3 && age < 16) elems_3_16[i].style.display = 'block';
+                }
+
+                for (var i = 0; i < elems_6_16.length; i++)  {
+                    if (age >= 0 && age < 3) elems_6_16[i].style.display = 'none';
+                    if (age >= 0 && age < 6) elems_6_16[i].style.display = 'none';
+                    if (age >= 3 && age < 6) elems_6_16[i].style.display = 'none';
+                    if (age >= 3 && age < 16) elems_6_16[i].style.display = 'none';
+                    if (age >= 6 && age < 16) elems_6_16[i].style.display = 'block';
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <h1>Скрининговый тест для выявления признаков нарушения развития</h1>
+        <h4>Авторы модифицикации теста ASSQ: Байрамова Л.Н. и Цыганкова Н.С.</h4>
+        <p class="h">Данная модификация теста ASSQ предназначена для выявления признаков нарушения развития детей, не всегда связанных с аутизмом.</p>
+        <p class="h">Тест предназначен для выяления уровней поражения центральной нервной системы и явялется базой для понимания дальнейшей маршрутизации пациента.<br>Тест может быть использован как родителями, которые подозревают РАС у ребенка, так и взрослыми людьми.</p>
+        <form action="#" id="form">
+            <section style="display: block;" id="page1">
+                <p class="h">Скрининговый тест ASSQ предназначен для выявления аутичных черт у детей в возрасте 3-6 лет.</p>
+                <p>Тест может быть использован как родителями, которые подозревают PAC у ребенка, так и просто взрослыми людьми (в этом случае заполняется либо самим человеком, либо его родителями по воспоминаниям о детстве).</p>
+                <p class="h"><b>Обратите внимание!</b><br>Почти все поля являются обязательными для заполнения и, чтобы перейти к следующей странице анкеты, необходимо заполнить текущую!</p>
+                <p class="h">Заполните следующий раздел сведениями <b><i>о ребенке</i></b></p>
+                <label for="fio">Введите ФИО ребенка (полностью):</label><br>
+                <input type="text" class="long text" id="fiochild" name="fiochild" onkeyup="checkPage1();" placeholder="Фамилия Имя Отчество ребенка" required autofocus><br>
+                <p>Укажите пол ребенка:</p>
+                <input type="radio" name="genderchild" id="genderchild1" value="м" onclick="checkPage1();"><label for="genderchild1">мужской</label><br>
+                <input type="radio" name="genderchild" id="genderchild2" value="ж" onclick="checkPage1();"><label for="genderchild2">женский</label><br>
+                <p><label for='bdaychild'>Дата рождения ребенка:</label></p>
+                <input type="date" id="bdaychild" name="birthdaychild" class="text" onchange="checkPage1();">
+                <p><label for='agechild'>Укажите возраст ребенка (в годах):</label></p>
+                <input type="number" class="text" id="agechild" name="agechild" placeholder="Возраст ребенка" onchange="hideShowAnswers(); checkPage1();"> лет
+                <p class="h">Заполните следующий раздел сведениями <b><i>о родителе</i></b></p>
+                <label for="fio">Введите Ваше ФИО (полностью):</label><br>
+                <input type="text" class="long text" id="fio" name="fio" onkeyup="checkPage1();" placeholder="Фамилия Имя Отчество родителя" required><br>
+                <p>Укажите, кем Вы приходитесь ребенку:</p>
+                <input type="radio" name="gender" id="gender1" value="мать" onclick="checkPage1();"><label for="gender1">мать</label><br>
+                <input type="radio" name="gender" id="gender2" value="отец" onclick="checkPage1();"><label for="gender2">отец</label><br>
+                <input type="radio" name="gender" id="gender3" value="бабушка / дедушка" onclick="checkPage1();"><label for="gender3">бабушка или дедушка</label><br>
+                <input type="radio" name="gender" id="gender4" value="опекун" onclick="checkPage1();"><label for="gender4">опекун</label><br>
+                <input type="radio" name="gender" id="gender5" value="другое" onclick="checkPage1();"><label for="gender5">другое</label>
+                <p><label for='bday'>Укажите Вашу дату рождения:</label></p>
+                <input type="date" id="bday" name="birthday" class="text" required onchange="checkPage1();">
+                <p><label for='age'>Введите Ваш возраст:</label></p>
+                <input type="number" class="text" id="age" name="age" required placeholder="Ваш Возраст" onkeyup="checkPage1();"> лет
+                <p>Пожалуйста, укажите Ваш телефон и (или) адрес электронной почты</p>
+                <label for="phone">Номер телефона</label><br>
+                <input class="text" type="tel" id="phone" name="phone" placeholder="8XXXXXXXXXX" onkeyup="checkPage1();">
+                <br><label for="email">E-mail</label><br>
+                <input class="text" type="email" id="email" name="email" placeholder="email@mail.com" onkeyup="checkPage1();">
+                <br><br>
+                <p class="h">На следующей странице будут показаны 29 вопросов теста. Необходимо ответить на все вопросы. Результаты теста будут отправлены врачу.</p>
+                <button onclick="location.href='index.html'; return false;">Назад ко всем тестам</button>
+                <button id="nextButton" onclick="nextPage('page1', 'page2'); return false;" disabled>К тесту</button>
+                <p style="display: block;" id="page1mess">* если кнопка не активна, пожалуйста, проверьте корректное заполнение всех полей на этой странице</p>
+            </section>
+
+            <section style="display: none;" id="page2">
+                <ol type="1" start="1">
+                    <li>
+                        <p class="answer">"Умный не по годам" в определенном проявлении</p>
+                        <input type="radio" id="a1-1" value="нет" name="a1" onclick="hideDiv('d1'); checkPage2();"><label for="a1-1">Нет</label><br>
+                        <input type="radio" id="a1-2" value="отчасти" name="a1" onclick="showDiv('d1'); checkPage2();"><label for="a1-2">Отчасти</label><br>
+                        <input type="radio" id="a1-3" value="да" name="a1" onclick="showDiv('d1'); checkPage2();"><label for="a1-3">Да</label>
+                        <div id="d1" style="display: none;">
+                            <p>Какое проявление, и с какого возраста началось?</p>
+                            <input type="text" class="text" name="d1">
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer" style="display: none;" data-dest="0-3">Воспринимается взрослыми, как неординарный, эксцентричный ребенок</p>
+                        <p class="answer" style="display: none;" data-dest="3-16">Воспринимается другими детьми как "эксцентричный профессор"</p>
+                        <input type="radio" id="a2-1" value="нет" name="a2" onclick="checkPage2();"><label for="a2-1">Нет</label><br>
+                        <input type="radio" id="a2-2" value="отчасти" name="a2" onclick="checkPage2();"><label for="a2-2">Отчасти</label><br>
+                        <input type="radio" id="a2-3" value="да" name="a2" onclick="checkPage2();"><label for="a2-3">Да</label>
+                    </li>
+                    <li>
+                        <p class="answer">Во многом живет в своем внутреннем мире с ограниченными и вычурными интеллектуальными интересами (находится "сам в себе", механический счет, чтение, выстраивает предметы в определенном порядке, и т.д.)</p>
+                        <input type="radio" id="a3-1" value="нет" name="a3" onclick="checkPage2();"><label for="a3-1">Нет</label><br>
+                        <input type="radio" id="a3-2" value="отчасти" name="a3" onclick="checkPage2();"><label for="a3-2">Отчасти</label><br>
+                        <input type="radio" id="a3-3" value="да" name="a3" onclick="checkPage2();"><label for="a3-3">Да</label>
+                    </li>
+                    <li>
+                        <p class="answer" style="display: none;" data-dest="0-6">Повышенная механическая память</p>
+                        <p class="answer" style="display: none;" data-dest="6-16">Накапливает факты по каким-то отдельным темам (хорошая механическая память), но на самом деле не понимает их смысла</p>
+                        <input type="radio" id="a4-1" value="нет" name="a4" onclick="checkPage2();"><label for="a4-1">Нет</label><br>
+                        <input type="radio" id="a4-2" value="отчасти" name="a4" onclick="checkPage2();"><label for="a4-2">Отчасти</label><br>
+                        <input type="radio" id="a4-3" value="да" name="a4" onclick="checkPage2();"><label for="a4-3">Да</label>
+                    </li>
+
+                    <li style="display: none;" data-dest="0-6">
+                        <p class="answer">Понимание речи</p>
+                        <input type="radio" id="a5-1" value="полное понимание" onclick="hideDiv('d5'); checkPage2();" name="a5"><label for="a5-1">Полное понимание</label><br>
+                        <input type="radio" id="a5-2" value="на бытовом уровне" onclick="hideDiv('d5'); checkPage2();" name="a5"><label for="a5-2">На бытовом уровне</label><br>
+                        <input type="radio" id="a5-3" value="непонимание" onclick="hideDiv('d5'); checkPage2();" name="a5"><label for="a5-3">Непонимание</label><br>
+                        <input type="radio" id="a5-4" value="другое" onclick="showDiv('d5'); checkPage2();" name="a5"><label for="a5-4">Другое</label>
+                        <div id="d5" style="display: none;">
+                            <p>Расскажите конкретнее:</p>
+                            <input type="text" class="text" name="d5">
+                        </div>
+                    </li>
+                    <li style="display: none;" data-dest="6-16">
+                        <p class="answer">Буквально понимает сказанное в переносном смысле и метафоры</p>
+                        <input type="radio" id="a30-1" value="нет" name="a30" onclick="checkPage2();"><label for="a30-1">Нет</label><br>
+                        <input type="radio" id="a30-2" value="отчасти" name="a30" onclick="checkPage2();"><label for="a30-2">Отчасти</label><br>
+                        <input type="radio" id="a30-3" value="да" name="a30" onclick="checkPage2();"><label for="a30-3">Да</label>
+                    </li>
+
+                    <li style="display: none;" data-dest="0-3">
+                        <p class="answer">Нарушение развития речи</p>
+                        <input type="radio" id="a29-1" value="ЗРР" onclick="checkPage2();" name="a29"><label for="a29-1">ЗРР</label><br>
+                        <input type="radio" id="a29-2" value="ЗПРР" onclick="checkPage2();" name="a29"><label for="a29-2">ЗПРР</label><br>
+                        <input type="radio" id="a29-3" value="дизатрия" onclick="checkPage2();" name="a29"><label for="a29-3">Дизатрия</label><br>
+                        <input type="radio" id="a29-4" value="сенсомоторная алалия" onclick="checkPage2();" name="a29"><label for="a29-4">Сенсомоторная алалия</label><br>
+                        <input type="radio" id="a29-5" value="нормальная речь" onclick="checkPage2();" name="a29"><label for="a29-5">Нормальная речь</label>
+                    </li>
+                    <li style="display: none;" data-dest="3-16">
+                        <p class="answer">Аномальный стиль коммуникации: не коммуницирует или характерен формальный, витиеватый, старомодный или роботоподобный стиль речи</p>
+                        <input type="radio" id="a6-1" value="нет" name="a6" onclick="checkPage2();"><label for="a6-1">Нет</label><br>
+                        <input type="radio" id="a6-2" value="отчасти" name="a6" onclick="checkPage2();"><label for="a6-2">Отчасти</label><br>
+                        <input type="radio" id="a6-3" value="да" name="a6" onclick="checkPage2();"><label for="a6-3">Да</label>
+                    </li>
+
+                    <li style="display: none;" data-dest="0-6">
+                        <p class="answer">Боится "нелепых" вещей, звуков, определенных цветов, и др. Может кричать и убегать.</p>
+                        <input type="radio" id="a7-1" value="нет" name="a7" onclick="hideDiv('d7'); checkPage2();"><label for="a7-1">Нет</label><br>
+                        <input type="radio" id="a7-2" value="отчасти" name="a7" onclick="showDiv('d7'); checkPage2();"><label for="a7-2">Отчасти</label><br>
+                        <input type="radio" id="a7-3" value="да" name="a7" onclick="showDiv('d7'); checkPage2();"><label for="a7-3">Да</label>
+                        <div id="d7" style="display: none;">
+                            <p>Напишите, что внушает страх?</p>
+                            <input type="text" class="text" name="d7">
+                        </div>
+                    </li>
+                    <li style="display: none;" data-dest="6-16">
+                        <p class="answer">Придумывает ранее неизвестные слова и выражения</p>
+                        <input type="radio" id="a31-1" value="нет" name="a31" onclick="checkPage2();"><label for="a31-1">Нет</label><br>
+                        <input type="radio" id="a31-2" value="отчасти" name="a31" onclick="checkPage2();"><label for="a31-2">Отчасти</label><br>
+                        <input type="radio" id="a31-3" value="да" name="a31" onclick="checkPage2();"><label for="a31-3">Да</label>
+                    </li>
+
+                    <li>
+                        <p class="answer">Обладает необычным голосом и манерой говорить, говорит на "птичьем" языке, издаёт звуки животных</p>
+                        <input type="radio" id="a8-1" value="нет" name="a8" onclick="hideDiv('d8'); checkPage2();"><label for="a8-1">Нет</label><br>
+                        <input type="radio" id="a8-2" value="отчасти" name="a8" onclick="showDiv('d8'); checkPage2();"><label for="a8-2">Отчасти</label><br>
+                        <input type="radio" id="a8-3" value="да" name="a8" onclick="showDiv('d8'); checkPage2();"><label for="a8-3">Да</label>
+                        <div id="d8" style="display: none;">
+                            <p>Опишите подробнее:</p>
+                            <input type="text" class="text" name="d8">
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Издаёт непроизвольные звуки: "прочищает горло", хрюкает, сопит, плачет или кричит.</p>
+                        <input type="radio" id="a9-1" value="нет" name="a9" onclick="checkPage2();"><label for="a9-1">Нет</label><br>
+                        <input type="radio" id="a9-2" value="отчасти" name="a9" onclick="checkPage2();"><label for="a9-2">Отчасти</label><br>
+                        <input type="radio" id="a9-3" value="да" name="a9" onclick="checkPage2();"><label for="a9-3">Да</label>
+                    </li>
+                    <li>
+                        <p class="answer">Удивительно преуспевает в одних вещах и столь же удивительно неуспешен в других</p>
+                        <input type="radio" id="a10-1" value="нет" name="a10" onclick="checkPage2();"><label for="a10-1">Нет</label><br>
+                        <input type="radio" id="a10-2" value="отчасти" name="a10" onclick="checkPage2();"><label for="a10-2">Отчасти</label><br>
+                        <input type="radio" id="a10-3" value="да" name="a10" onclick="checkPage2();"><label for="a10-3">Да</label>
+                    </li>
+
+                    <li style="display: none;" data-dest="0-6">
+                        <p class="answer">Не может найти контакта с другими детьми, не играет с ними, проявляет агрессию, и др.</p>
+                        <input type="radio" id="a11-1" value="нет" name="a11" onclick="hideDiv('d11'); checkPage2();"><label for="a11-1">Нет</label><br>
+                        <input type="radio" id="a11-2" value="отчасти" name="a11" onclick="showDiv('d11'); checkPage2();"><label for="a11-2">Отчасти</label><br>
+                        <input type="radio" id="a11-3" value="да" name="a11" onclick="showDiv('d11'); checkPage2();"><label for="a11-3">Да</label>
+                        <div id="d11" style="display: none;">
+                            <p>Расскажите подробнее:</p>
+                            <input type="text" class="text" name="d11">
+                        </div>
+                    </li>
+                    <li style="display: none;" data-dest="6-16">
+                        <p class="answer">Свободно пользуется речью, но не может сделать поправку на соответствие социальному окружению или интересам другой категории слушателей</p>
+                        <input type="radio" id="a32-1" value="нет" name="a32" onclick="checkPage2();"><label for="a32-1">Нет</label><br>
+                        <input type="radio" id="a32-2" value="отчасти" name="a32" onclick="checkPage2();"><label for="a32-2">Отчасти</label><br>
+                        <input type="radio" id="a32-3" value="да" name="a32" onclick="checkPage2();"><label for="a32-3">Да</label>
+                    </li>
+
+                    <li>
+                        <p class="answer">Недостаток эмпатии (плохо чувствует чужие эмоции)</p>
+                        <input type="radio" id="a12-1" value="нет" name="a12" onclick="checkPage2();"><label for="a12-1">Нет</label><br>
+                        <input type="radio" id="a12-2" value="отчасти" name="a12" onclick="checkPage2();"><label for="a12-2">Отчасти</label><br>
+                        <input type="radio" id="a12-3" value="да" name="a12" onclick="checkPage2();"><label for="a12-3">Да</label>
+                    </li>
+                    <li>
+                        <p class="answer" style="display: none;" data-dest="0-3">Плохо контактирует с людьми</p>
+                        <p class="answer" style="display: none;" data-dest="3-16">Делает наивные и смущающие замечания</p>
+                        <input type="radio" id="a13-1" value="нет" name="a13" onclick="checkPage2();"><label for="a13-1">Нет</label><br>
+                        <input type="radio" id="a13-2" value="отчасти" name="a13" onclick="checkPage2();"><label for="a13-2">Отчасти</label><br>
+                        <input type="radio" id="a13-3" value="да" name="a13" onclick="checkPage2();"><label for="a13-3">Да</label>
+                    </li>
+                    <li>
+                        <p class="answer">Аномальный стиль глазного контакта (не смотрит в глаза, отсутствует фиксация взора, трудно привлечь внимание, и т.д.)</p>
+                        <input type="radio" id="a14-1" value="нет" name="a14" onclick="hideDiv('d14'); checkPage2();"><label for="a14-1">Нет</label><br>
+                        <input type="radio" id="a14-2" value="отчасти" name="a14" onclick="showDiv('d14'); checkPage2();"><label for="a14-2">Отчасти</label><br>
+                        <input type="radio" id="a14-3" value="да" name="a14" onclick="showDiv('d14'); checkPage2();"><label for="a14-3">Да</label>
+                        <div id="d14" style="display: none;">
+                            <p>Расскажите подробнее:</p>
+                            <input type="text" class="text" name="d14">
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Хочет общаться, но ему/ей не удается построить отношения со сверстниками, легче контактирует со взрослыми</p>
+                        <input type="radio" id="a15-1" value="нет" name="a15" onclick="checkPage2();"><label for="a15-1">Нет</label><br>
+                        <input type="radio" id="a15-2" value="отчасти" name="a15" onclick="checkPage2();"><label for="a15-2">Отчасти</label><br>
+                        <input type="radio" id="a15-3" value="да" name="a15" onclick="checkPage2();"><label for="a15-3">Да</label>
+                    </li>
+                    <li>
+                        <p class="answer">Может быть с другими детьми, но только на своих условиях</p>
+                        <input type="radio" id="a16-1" value="нет" name="a16" onclick="checkPage2();"><label for="a16-1">Нет</label><br>
+                        <input type="radio" id="a16-2" value="отчасти" name="a16" onclick="checkPage2();"><label for="a16-2">Отчасти</label><br>
+                        <input type="radio" id="a16-3" value="да" name="a16" onclick="checkPage2();"><label for="a16-3">Да</label>
+                    </li>
+                    <li>
+                        <p class="answer">Нет лучшего друга</p>
+                        <input type="radio" id="a17-1" value="нет" name="a17" onclick="checkPage2();"><label for="a17-1">Нет</label><br>
+                        <input type="radio" id="a17-2" value="отчасти" name="a17" onclick="checkPage2();"><label for="a17-2">Отчасти</label><br>
+                        <input type="radio" id="a17-3" value="да" name="a17" onclick="checkPage2();"><label for="a17-3">Да</label>
+                    </li>
+                    <li>
+                        <p class="answer">Нехватка здравого смысла, ритуальность, не понимает обращенную речь</p>
+                        <input type="radio" id="a18-1" value="нет" name="a18" onclick="checkPage2();"><label for="a18-1">Нет</label><br>
+                        <input type="radio" id="a18-2" value="отчасти" name="a18" onclick="checkPage2();"><label for="a18-2">Отчасти</label><br>
+                        <input type="radio" id="a18-3" value="да" name="a18" onclick="checkPage2();"><label for="a18-3">Да</label>
+                    </li>
+                    <li>
+                        <p class="answer" style="display: none;" data-dest="0-6">Плохо даются игры по правилам, всегда играет по-своему</p>
+                        <p class="answer" style="display: none;" data-dest="6-16">Плохо даются игры: не понимает идеи командного взаимодействия, считает «собственные голы»</p>
+                        <input type="radio" id="a19-1" value="нет" name="a19" onclick="checkPage2();"><label for="a19-1">Нет</label><br>
+                        <input type="radio" id="a19-2" value="отчасти" name="a19" onclick="checkPage2();"><label for="a19-2">Отчасти</label><br>
+                        <input type="radio" id="a19-3" value="да" name="a19" onclick="checkPage2();"><label for="a19-3">Да</label>
+                    </li>
+                    <li>
+                        <p class="answer">Имеются неуклюжие, плохо скоординированные, нескладные, неловкие движения или жесты</p>
+                        <input type="radio" id="a20-1" value="нет" name="a20" onclick="checkPage2();"><label for="a20-1">Нет</label><br>
+                        <input type="radio" id="a20-2" value="отчасти" name="a20" onclick="checkPage2();"><label for="a20-2">Отчасти</label><br>
+                        <input type="radio" id="a20-3" value="да" name="a20" onclick="checkPage2();"><label for="a20-3">Да</label>
+                    </li>
+                    <li>
+                        <p class="answer">Есть непроизвольные движения лицом или телом (тики, подергивания, и др.), которые невозможно прекратить</p>
+                        <input type="radio" id="a21-1" value="нет" name="a21" onclick="checkPage2();"><label for="a21-1">Нет</label><br>
+                        <input type="radio" id="a21-2" value="отчасти" name="a21" onclick="checkPage2();"><label for="a21-2">Отчасти</label><br>
+                        <input type="radio" id="a21-3" value="да" name="a21" onclick="checkPage2();"><label for="a21-3">Да</label>
+                    </li>
+                    <li>
+                        <p class="answer">Имеются сложности в выполнении повседневных дел из-за навязчивого повторения определенных действий (уход от реальности через навязчивые движения, накручивание волос, перебирание пальцев, щипание, теребление края одежды, и др.)</p>
+                        <input type="radio" id="a22-1" value="нет" name="a22" onclick="checkPage2();"><label for="a22-1">Нет</label><br>
+                        <input type="radio" id="a22-2" value="отчасти" name="a22" onclick="checkPage2();"><label for="a22-2">Отчасти</label><br>
+                        <input type="radio" id="a22-3" value="да" name="a22" onclick="checkPage2();"><label for="a22-3">Да</label>
+                    </li>
+                    <li>
+                        <p class="answer">Привержен особому порядку (рутине) и настаивает на отсутствии изменений</p>
+                        <input type="radio" id="a23-1" value="нет" name="a23" onclick="checkPage2();"><label for="a23-1">Нет</label><br>
+                        <input type="radio" id="a23-2" value="отчасти" name="a23" onclick="checkPage2();"><label for="a23-2">Отчасти</label><br>
+                        <input type="radio" id="a23-3" value="да" name="a23" onclick="checkPage2();"><label for="a23-3">Да</label>
+                    </li>
+                    <li>
+                        <p class="answer">Необычно сильная привязанность к предметам, их отсутствие вызывает страх</p>
+                        <input type="radio" id="a24-1" value="нет" name="a24" onclick="checkPage2();"><label for="a24-1">Нет</label><br>
+                        <input type="radio" id="a24-2" value="отчасти" name="a24" onclick="checkPage2();"><label for="a24-2">Отчасти</label><br>
+                        <input type="radio" id="a24-3" value="да" name="a24" onclick="checkPage2();"><label for="a24-3">Да</label>
+                    </li>
+                    <li>
+                        <p class="answer" style="display: none;" data-dest="0-3">Боится нового, в том числе дефекации в незнакомом месте, на незнакомом горшке и др.</p>
+                        <p class="answer" style="display: none;" data-dest="3-16">Дразнят или травят другие дети</p>
+                        <input type="radio" id="a25-1" value="нет" name="a25" onclick="checkPage2();"><label for="a25-1">Нет</label><br>
+                        <input type="radio" id="a25-2" value="отчасти" name="a25" onclick="checkPage2();"><label for="a25-2">Отчасти</label><br>
+                        <input type="radio" id="a25-3" value="да" name="a25" onclick="checkPage2();"><label for="a25-3">Да</label>
+                    </li>
+                    <li>
+                        <p class="answer">Обладает явно необычной мимикой</p>
+                        <input type="radio" id="a26-1" value="нет" name="a26" onclick="checkPage2();"><label for="a26-1">Нет</label><br>
+                        <input type="radio" id="a26-2" value="отчасти" name="a26" onclick="checkPage2();"><label for="a26-2">Отчасти</label><br>
+                        <input type="radio" id="a26-3" value="да" name="a26" onclick="checkPage2();"><label for="a26-3">Да</label>
+                    </li>
+                    <li>
+                        <p class="answer">Имеет явно необычные телодвижения (стимы): может кружиться, махать "крылышками", подпрыгивать в моменты эмоционального возбуждения, ритуально выкладывать предметы по порядку, и др.</p>
+                        <input type="radio" id="a27-1" value="нет" name="a27" onclick="hideDiv('d27'); checkPage2();"><label for="a27-1">Нет</label><br>
+                        <input type="radio" id="a27-2" value="отчасти" name="a27" onclick="showDiv('d27'); checkPage2();"><label for="a27-2">Отчасти</label><br>
+                        <input type="radio" id="a27-3" value="да" name="a27" onclick="showDiv('d27'); checkPage2();"><label for="a27-3">Да</label>
+                        <div id="d27" style="display: none;">
+                            <p>Расскажите подробнее:</p>
+                            <input type="text" class="text" name="d27">
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Нарушение вербальной коммуникации: молчит и не разговаривает с другими людьми, не хочет разговаривать (мутизм), эхолалия, и др.</p>
+                        <input type="radio" id="a28-1" value="нет" name="a28" onclick="checkPage2();"><label for="a28-1">Нет</label><br>
+                        <input type="radio" id="a28-2" value="отчасти" name="a28" onclick="checkPage2();"><label for="a28-2">Отчасти</label><br>
+                        <input type="radio" id="a28-3" value="да" name="a28" onclick="checkPage2();"><label for="a28-3">Да</label>
+                    </li>
+                </ol>
+                <p class="h">Проверьте, пожалуйста, корректное заполнение всех полей. Форму можно отправить только один раз.</p>
+                <p class="h"><b>Внимание!</b><br>Нажимая кнопку "Отправить", Вы даете согласие на обработку персональных данных и возможное использование <b>обезличенных</b> показателей в научно-исследовательских целях.</p>
+                <br><br>
+                <button onclick="backPage('page2', 'page1'); return false;">Назад</button>
+                <button type="submit" id="submitButton" onclick="nextPage('page2', 'page3'); showResult(); return true;" disabled>Отправить</button>
+                <p style="display: block;" id="page2mess">* если кнопка не активна, пожалуйста, проверьте корректное заполнение всех полей на этой странице</p>
+            </section>
+            
+            <section style="display: none;" id="page3">
+                <p class="h">Благодарим Вас за прохождение теста!</p>
+                <p>В сумме Вы набрали <span id="score"></span> баллов.</p>
+                <p><span id="comment"></span></p>
+                <p>Данные были отправлены врачу.</p>
+                <br><br>
+                <button onclick="location.href='index.html'; return false;">Назад ко всем тестам</button>
+            </section>
+        </form>
+
+        <script>
+            const url = "https://script.google.com/macros/s/AKfycbwLbEwm0hbPvuAtQ0xpHpuXhUBHN0UKN-HydvLGGHEnq5bydCTk8mfBLcJf0p2VML7Hvg/exec";
+            const form = document.querySelector("#form");
+            form.addEventListener('submit', async(e) => {
+                e.preventDefault();
+
+                await fetch(url, { method: 'POST', body: new FormData(form)})
+                    .then(response => console.log('Success!', response))
+                    .catch(error => console.error('Error!', error.message));
+            });
+        </script>
+    </body>
+</html>

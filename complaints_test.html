@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Основные жалобы</title>
+        <link rel="stylesheet" href="styles.css">
+        <script src="scripts.js"></script>
+        <script>
+            function showResult() {
+                //общая сумма баллов
+                let score = 0;
+                score += document.querySelectorAll('input[type="radio"][data-score="0.5"]:checked').length * 0.5;
+                score += document.querySelectorAll('input[type="radio"][data-score="1"]:checked').length;
+                score += document.querySelectorAll('input[type="radio"][data-score="2"]:checked').length * 2;
+                score += document.querySelectorAll('input[type="checkbox"][data-score="0.5"]:checked').length * 0.5;
+
+                //баллы по разделам
+                let scorenev = 0;
+                for (var k = 1; k <= 6; ++k)
+                {
+                    scorenev += document.querySelectorAll('input[type="radio"][data-score="0.5"][name="a' + k + '"]:checked').length * 0.5;
+                    scorenev += document.querySelectorAll('input[type="checkbox"][data-score="0.5"][name^="d' + k + '"]:checked').length * 0.5;
+                }
+
+                let scoreost = 0;
+                for (var k = 7; k <= 11; ++k)
+                {
+                    scoreost += document.querySelectorAll('input[type="radio"][data-score="0.5"][name="a' + k + '"]:checked').length * 0.5;
+                    scoreost += document.querySelectorAll('input[type="radio"][data-score="1"][name="a' + k + '"]:checked').length;
+                    scoreost += document.querySelectorAll('input[type="radio"][data-score="2"][name="a' + k + '"]:checked').length * 2;
+                    scoreost += document.querySelectorAll('input[type="checkbox"][data-score="0.5"][name^="d' + k + '"]:checked').length * 0.5;
+                }
+
+                let scoresto = 0;
+                for (var k = 12; k <= 13; ++k)
+                {
+                    scoresto += document.querySelectorAll('input[type="radio"][data-score="0.5"][name="a' + k + '"]:checked').length * 0.5;
+                    scoresto += document.querySelectorAll('input[type="checkbox"][data-score="0.5"][name^="d' + k + '"]:checked').length * 0.5;
+                }
+
+                let scorelog = 0;
+                for (var k = 14; k <= 21; ++k)
+                {
+                    scorelog += document.querySelectorAll('input[type="radio"][data-score="0.5"][name="a' + k + '"]:checked').length * 0.5;
+                    scorelog += document.querySelectorAll('input[type="checkbox"][data-score="0.5"][name^="d' + k + '"]:checked').length * 0.5;
+                }
+
+                document.getElementById("score").innerHTML = score;
+                document.getElementById("scorenev").innerHTML = scorenev;
+                document.getElementById("scoreost").innerHTML = scoreost;
+                document.getElementById("scoresto").innerHTML = scoresto;
+                document.getElementById("scorelog").innerHTML = scorelog;
+            }
+            function checkPage1() {
+                var active = (
+                    document.querySelector('#fio').value.length > 3 &&
+                    document.querySelector('#fiochild').value.length > 3 &&
+
+                    document.querySelectorAll('input[type="radio"]:checked').length >= 2 &&
+
+                    document.querySelector('#bday').value &&
+                    document.querySelector('#bdaychild').value &&
+
+                    document.querySelector('#age').value.length > 0 &&
+                    document.querySelector('#agechild').value.length > 0
+                );
+                document.getElementById('page1button').disabled = !active;
+                if (active) hideDiv('page1mess');
+                else showDiv('page1mess');
+            }
+            function checkPage2() {
+                var radiochecked = document.querySelectorAll('input[type="radio"]:checked').length;
+                var active = (radiochecked >= 8);
+                document.getElementById('page2button').disabled = !active;
+                if (active) hideDiv('page2mess');
+                else showDiv('page2mess');
+            }
+            function checkPage3() {
+                var radiochecked = document.querySelectorAll('input[type="radio"]:checked').length;
+                var active = (radiochecked >= 13);
+                document.getElementById('page3button').disabled = !active;
+                if (active) hideDiv('page3mess');
+                else showDiv('page3mess');
+            }
+            function checkPage4() {
+                var radiochecked = document.querySelectorAll('input[type="radio"]:checked').length;
+                var active = (radiochecked >= 15);
+                document.getElementById('page4button').disabled = !active;
+                if (active) hideDiv('page4mess');
+                else showDiv('page4mess');
+            }
+            function checkPage5() {
+                var radiochecked = document.querySelectorAll('input[type="radio"]:checked').length;
+                var active = (radiochecked >= 21);
+                document.getElementById('page5button').disabled = !active;
+                if (active) hideDiv('page5mess');
+                else showDiv('page5mess');
+            }
+            function checkPage6() {
+                var radiochecked = document.querySelectorAll('input[type="radio"]:checked').length;
+                var active = (radiochecked >= 22);
+                document.getElementById('page6button').disabled = !active;
+                if (active) hideDiv('page6mess');
+                else showDiv('page6mess');
+            }
+        </script>
+    </head>
+    <body>
+        <h1>Жалобы и формирование запроса</h1>
+        <h4>(анкета заполняется при первичном интервьюировании пациента и его родителей)</h4>
+        <form action="#" id="form">
+            <section id="page1" style="display: block;">
+                <p class="h"><b>Обратите внимание!</b><br>Почти все поля являются обязательными для заполнения и, чтобы перейти к следующей странице анкеты, необходимо заполнить текущую!</p>
+                <p class="h">Заполните следующий раздел сведениями <b><i>о ребенке</i></b></p>
+                <label for="fio">Введите ФИО ребенка (полностью):</label><br>
+                <input type="text" class="long text" id="fiochild" name="fiochild" onkeyup="checkPage1();" placeholder="Фамилия Имя Отчество ребенка" required autofocus><br>
+                <p>Укажите пол ребенка:</p>
+                <input type="radio" name="genderchild" id="genderchild1" value="м" onclick="checkPage1();"><label for="genderchild1">мужской</label><br>
+                <input type="radio" name="genderchild" id="genderchild2" value="ж" onclick="checkPage1();"><label for="genderchild2">женский</label><br>
+                <p><label for='bdaychild'>Дата рождения ребенка:</label></p>
+                <input type="date" id="bdaychild" name="birthdaychild" class="text" onchange="checkPage1();">
+                <p><label for='agechild'>Укажите возраст ребенка:</label></p>
+                <input type="text" class="text" id="agechild" name="agechild" placeholder="Возраст ребенка" onkeyup="checkPage1();"> лет
+                <p class="h">Заполните следующий раздел сведениями <b><i>о родителе</i></b></p>
+                <label for="fio">Введите Ваше ФИО (полностью):</label><br>
+                <input type="text" class="long text" id="fio" name="fio" onkeyup="checkPage1();" placeholder="Фамилия Имя Отчество родителя" required><br>
+                <p>Укажите, кем Вы приходитесь ребенку:</p>
+                <input type="radio" name="gender" id="gender1" value="мать" onclick="checkPage1();"><label for="gender1">мать</label><br>
+                <input type="radio" name="gender" id="gender2" value="отец" onclick="checkPage1();"><label for="gender2">отец</label><br>
+                <input type="radio" name="gender" id="gender3" value="бабушка / дедушка" onclick="checkPage1();"><label for="gender3">бабушка или дедушка</label><br>
+                <input type="radio" name="gender" id="gender4" value="опекун" onclick="checkPage1();"><label for="gender4">опекун</label><br>
+                <input type="radio" name="gender" id="gender5" value="другое" onclick="checkPage1();"><label for="gender5">другое</label>
+                <p><label for='bday'>Укажите Вашу дату рождения:</label></p>
+                <input type="date" id="bday" name="birthday" class="text" required onchange="checkPage1();">
+                <p><label for='age'>Введите Ваш возраст:</label></p>
+                <input type="text" class="text" id="age" name="age" required placeholder="Ваш Возраст" onkeyup="checkPage1();"> лет
+                <p class="answer"><label for='main_complaints'>Основные жалобы и цель обращения</label></p>
+                <textarea class="text" id="main_complaints" name="main_complaints" placeholder="Напишите здесь основные жалобы, которые Вас беспокоят у ребёнка."></textarea>
+                <br>Необходимо также отразить, с какого возраста и после каких событий начались вышеописанные изменения (возможно, физические травмы, прививки, и др.)
+                <br><br>
+                <button onclick="location.href='index.html'; return false;">Назад ко всем тестам</button>
+                <button onclick="nextPage('page1', 'page2'); return false;" id="page1button" disabled>Далее</button>
+                <p style="display: block;" id="page1mess">* если кнопка не активна, пожалуйста, проверьте корректное заполнение всех полей на этой странице</p>
+            </section>
+
+            <section id="page2" style="display: none;">
+                <h3>Неврологические жалобы</h3>
+                <p class="h"><b>Обратите внимание!</b><br>Если Вы не совсем знакомы с медицинскими терминами, попробуйте открыть ответ «есть». Там Вы найдёте характеристику термина, употреблённого в жалобах. Например, «Вегетативные нарушения: метеозависимость, обмороки, мраморность кожных покровов.</p>
+                <ol start="1" type="1">
+                    <li>
+                        <p class="answer">Острота зрения</p>
+                        <input type="radio" id="a1-1" value="норма" data-score="0" name="a1" onclick="checkPage2();"><label for="a1-1">норма</label><br>
+                        <input type="radio" id="a1-2" value="снижена" data-score="0.5" name="a1" onclick="checkPage2();"><label for="a1-2">снижена</label>
+                    </li>
+                    <li>
+                        <p class="answer">Вегетативные нарушения</p>
+                        <input type="radio" id="a2-1" value="нет" data-score="0" name="a2" onclick="hideDiv('d2'); checkPage2();"><label for="a2-1">нет</label><br>
+                        <input type="radio" id="a2-2" value="есть" data-score="0.5" name="a2" onclick="showDiv('d2'); checkPage2();"><label for="a2-2">есть</label>
+                        <div id="d2" style="display: none;">
+                            <ul class="forcheckboxes">
+                                <li><input type="checkbox" id="d2-1" value="метеозависимость" data-score="0.5" name="d2-1"><label for="d2-1">метеозависимость</label></li>
+                                <li><input type="checkbox" id="d2-2" value="обмороки" data-score="0.5" name="d2-2"><label for="d2-2">обмороки</label></li>
+                                <li><input type="checkbox" id="d2-3" value="мраморность кожных покровов" data-score="0.5" name="d2-3"><label for="d2-3">мраморность кожных покровов</label></li>
+                                <li><input type="checkbox" id="d2-4" value="холодные конечности" data-score="0.5" name="d2-4"><label for="d2-4">холодные конечности</label></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Состояние высших психических функций</p>
+                        <input type="radio" id="a3-1" value="норма" data-score="0" name="a3" onclick="hideDiv('d3'); checkPage2();"><label for="a3-1">норма</label><br>
+                        <input type="radio" id="a3-2" value="нарушено" data-score="0.5" name="a3" onclick="showDiv('d3'); checkPage2();"><label for="a3-2">нарушено</label>
+                        <div id="d3" style="display: none;">
+                            <ul class="forcheckboxes">
+                                <li><input type="checkbox" id="d3-1" value="восприятие" data-score="0.5" name="d3-1"><label for="d3-1">восприятие</label></li>
+                                <li><input type="checkbox" id="d3-2" value="память" data-score="0.5" name="d3-2"><label for="d3-2">память</label></li>
+                                <li><input type="checkbox" id="d3-3" value="внимание" data-score="0.5" name="d3-3"><label for="d3-3">внимание</label></li>
+                                <li><input type="checkbox" id="d3-4" value="мышление" data-score="0.5" name="d3-4"><label for="d3-4">мышление</label></li>
+                                <li><input type="checkbox" id="d3-5" value="интеллект" data-score="0.5" name="d3-5"><label for="d3-5">интеллект</label></li>
+                                <li><input type="checkbox" id="d3-6" value="затруднено обучение" data-score="0.5" name="d3-6"><label for="d3-6">затруднено обучение</label></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Речь и коммуникация</p>
+                        <input type="radio" id="a4-1" value="норма" data-score="0" name="a4" onclick="checkPage2();"><label for="a4-1">норма</label><br>
+                        <input type="radio" id="a4-2" value="нарушены" data-score="0.5" name="a4" onclick="checkPage2();"><label for="a4-2">нарушены</label>
+                    </li>
+                    <li>
+                        <p class="answer">Нарушения психоэмоциональной сферы</p>
+                        <input type="radio" id="a5-1" value="нет" data-score="0" name="a5" onclick="hideDiv('d5'); checkPage2();"><label for="a5-1">нет</label><br>
+                        <input type="radio" id="a5-2" value="есть" data-score="0.5" name="a5" onclick="showDiv('d5'); checkPage2();"><label for="a5-2">есть</label>
+                        <div id="d5" style="display: none;">
+                            <ul class="forcheckboxes">
+                                <li><input type="checkbox" id="d5-1" value="усталость, слабость" data-score="0.5" name="d5-1"><label for="d5-1">усталость, слабость</label></li>
+                                <li><input type="checkbox" id="d5-2" value="плаксивость" data-score="0.5" name="d5-2"><label for="d5-2">плаксивость</label></li>
+                                <li><input type="checkbox" id="d5-3" value="резкая смена настроения" data-score="0.5" name="d5-3"><label for="d5-3">резкая смена настроения</label></li>
+                                <li><input type="checkbox" id="d5-4" value="раздражительность, гнев" data-score="0.5" name="d5-4"><label for="d5-4">раздражительность, гнев</label></li>
+                                <li><input type="checkbox" id="d5-5" value="нарушение сна" data-score="0.5" name="d5-5"><label for="d5-5">нарушение сна</label></li>
+                                <li><input type="checkbox" id="d5-6" value="нарушение аппетита" data-score="0.5" name="d5-6"><label for="d5-6">нарушение аппетита</label></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Поведение</p>
+                        <input type="radio" id="a6-1" value="норма" data-score="0" name="a6" onclick="checkPage2();"><label for="a6-1">норма</label><br>
+                        <input type="radio" id="a6-2" value="нарушено" data-score="0.5" name="a6" onclick="checkPage2();"><label for="a6-2">нарушено</label>
+                    </li>
+                </ol>
+                <br><br>
+                <button onclick="backPage('page2', 'page1'); return false;">Назад</button>
+                <button onclick="nextPage('page2', 'page3'); return false;" id="page2button" disabled>Далее</button>
+                <p style="display: block;" id="page2mess">* если кнопка не активна, пожалуйста, проверьте корректное заполнение всех полей на этой странице</p>
+            </section>
+
+            <section id="page3" style="display: none;">
+                <h3>Остеопатические жалобы</h3>
+                <ol type="1" start="7">
+                    <li>
+                        <p class="answer">Головная боль</p>
+                        <input type="radio" id="a7-1" value="нет" data-score="0" name="a7" onclick="checkPage3();"><label for="a7-1">нет</label><br>
+                        <input type="radio" id="a7-2" value="иногда" data-score="1" name="a7" onclick="checkPage3();"><label for="a7-2">иногда</label><br>
+                        <input type="radio" id="a7-3" value="часто" data-score="2" name="a7" onclick="checkPage3();"><label for="a7-3">часто</label>
+                    </li>
+                    <li>
+                        <p class="answer">Боли в позвоночнике</p>
+                        <input type="radio" id="a8-1" value="нет" data-score="0" name="a8" onclick="hideDiv('d8'); checkPage3();"><label for="a8-1">нет</label><br>
+                        <input type="radio" id="a8-2" value="есть" data-score="0.5" name="a8" onclick="showDiv('d8'); checkPage3();"><label for="a8-2">есть</label>
+                        <div id="d8" style="display: none;">
+                            <ul class="forcheckboxes">
+                                <li>Отдел:</li>
+                                <li><input type="checkbox" id="d8-1" value="шейный" data-score="0.5" name="d8-1"><label for="d8-1">шейный</label></li>
+                                <li><input type="checkbox" id="d8-2" value="грудной" data-score="0.5" name="d8-2"><label for="d8-2">грудной</label></li>
+                                <li><input type="checkbox" id="d8-3" value="поясничный" data-score="0.5" name="d8-3"><label for="d8-3">поясничный</label></li>
+                                <li><input type="checkbox" id="d8-4" value="крестцовый" data-score="0.5" name="d8-4"><label for="d8-4">крестцовый</label></li>
+                                <li><input type="checkbox" id="d8-5" value="копчик" data-score="0.5" name="d8-5"><label for="d8-5">копчик</label></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Осанка</p>
+                        <input type="radio" id="a9-1" value="норма" data-score="0" name="a9" onclick="hideDiv('d9'); checkPage3();"><label for="a9-1">норма</label><br>
+                        <input type="radio" id="a9-2" value="патология" data-score="0.5" name="a9" onclick="showDiv('d9'); checkPage3();"><label for="a9-2">патология</label>
+                        <div id="d9" style="display: none;">
+                            <ul class="forcheckboxes">
+                                <li><input type="checkbox" id="d9-1" value="кривошея" data-score="0.5" name="d9-1"><label for="d9-1">кривошея</label></li>
+                                <li><input type="checkbox" id="d9-2" value="нарушение осанки" data-score="0.5" name="d9-2"><label for="d9-2">нарушение осанки</label></li>
+                                <li><input type="checkbox" id="d9-3" value="сколиоз" data-score="0.5" name="d9-3"><label for="d9-3">сколиоз</label></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Верхние конечности</p>
+                        <input type="radio" id="a10-1" value="норма" data-score="0" name="a10" onclick="checkPage3();"><label for="a10-1">норма</label><br>
+                        <input type="radio" id="a10-2" value="есть нарушения" data-score="0.5" name="a10" onclick="checkPage3();"><label for="a10-2">есть нарушения</label>
+                    </li>
+                    <li>
+                        <p class="answer">Нижние конечности</p>
+                        <input type="radio" id="a11-1" value="норма" data-score="0" name="a11" onclick="hideDiv('d11'); checkPage3();"><label for="a11-1">норма</label><br>
+                        <input type="radio" id="a11-2" value="есть нарушения" data-score="0.5" name="a11" onclick="showDiv('d11'); checkPage3();"><label for="a11-2">есть нарушения</label>
+                        <div id="d11" style="display: none;">
+                            <ul class="forcheckboxes">
+                                <li><input type="checkbox" id="d11-1" value="боли" data-score="0.5" name="d11-1"><label for="d11-1">боли</label></li>
+                                <li><input type="checkbox" id="d11-2" value="плоскостопие" data-score="0.5" name="d11-2"><label for="d11-2">плоскостопие</label></li>
+                                <li><input type="checkbox" id="d11-3" value="вальгусная деформация" data-score="0.5" name="d11-3"><label for="d11-3">вальгусная деформация</label></li>
+                                <li><input type="checkbox" id="d11-4" value="варусная деформация" data-score="0.5" name="d11-4"><label for="d11-4">варусная деформация</label></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ol>
+                <br><br>
+                <button onclick="backPage('page3', 'page2'); return false;">Назад</button>
+                <button onclick="nextPage('page3', 'page4'); return false;" id="page3button" disabled>Далее</button>
+                <p style="display: block;" id="page3mess">* если кнопка не активна, пожалуйста, проверьте корректное заполнение всех полей на этой странице</p>
+            </section>
+
+            <section id="page4" style="display: none;">
+                <h3>Стоматологические жалобы</h3>
+                <ol type="1" start="12">
+                    <li>
+                        <p class="answer">Жалобы</p>
+                        <input type="radio" id="a12-1" value="нет" data-score="0" name="a12" onclick="hideDiv('d12'); checkPage4();"><label for="a12-1">нет</label><br>
+                        <input type="radio" id="a12-2" value="есть" data-score="0.5" name="a12" onclick="showDiv('d12'); checkPage4();"><label for="a12-2">есть</label>
+                        <div id="d12" style="display: none;">
+                            <ul class="forcheckboxes">
+                                <li><input type="checkbox" id="d12-1" value="скученность зубов" data-score="0.5" name="d12-1"><label for="d12-1">скученность зубов</label></li>
+                                <li><input type="checkbox" id="d12-2" value="нарушение прикуса" data-score="0.5" name="d12-2"><label for="d12-2">нарушение прикуса</label></li>
+                                <li><input type="checkbox" id="d12-3" value="асимметрия лица" data-score="0.5" name="d12-3"><label for="d12-3">асимметрия лица</label></li>
+                                <li><input type="checkbox" id="d12-4" value="кариес" data-score="0.5" name="d12-4"><label for="d12-4">кариес</label></li>
+                                <li><input type="checkbox" id="d12-5" value="другое" data-score="0.5" name="d12-5"><label for="d12-5">другое</label></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Функциональные нарушения</p>
+                        <input type="radio" id="a13-1" value="нет" data-score="0" name="a13" onclick="hideDiv('d13'); checkPage4();"><label for="a13-1">нет</label><br>
+                        <input type="radio" id="a13-2" value="есть" data-score="0.5" name="a13" onclick="showDiv('d13'); checkPage4();"><label for="a13-2">есть</label>
+                        <div id="d13" style="display: none;">
+                            <ul class="forcheckboxes">
+                                <li><input type="checkbox" id="d13-1" value="несмыкание губ" data-score="0.5" name="d13-1"><label for="d13-1">несмыкание губ</label></li>
+                                <li><input type="checkbox" id="d13-2" value="ротовое дыхание" data-score="0.5" name="d13-2"><label for="d13-2">ротовое дыхание</label></li>
+                                <li><input type="checkbox" id="d13-3" value="вялое жевание" data-score="0.5" name="d13-3"><label for="d13-3">вялое жевание</label></li>
+                                <li><input type="checkbox" id="d13-4" value="рецидив после ортодонтического лечения" data-score="0.5" name="d13-4"><label for="d13-4">рецидив после ортодонтического лечения</label></li>
+                                <li><input type="checkbox" id="d13-5" value="другое" data-score="0.5" name="d13-5"><label for="d13-5">другое</label></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ol>
+                <br><br>
+                <button onclick="backPage('page4', 'page3'); return false;">Назад</button>
+                <button onclick="nextPage('page4', 'page5'); return false;" id="page4button" disabled>Далее</button>
+                <p style="display: block;" id="page4mess">* если кнопка не активна, пожалуйста, проверьте корректное заполнение всех полей на этой странице</p>
+            </section>
+
+            <section id="page5" style="display: none;">
+                <h3>Логопедические жалобы</h3>
+                <ol type="1" start="14">
+                    <li>
+                        <p class="answer">Нарушение строения речевого аппарата</p>
+                        <input type="radio" id="a14-1" value="нет" data-score="0" name="a14" onclick="hideDiv('d14'); checkPage5();"><label for="a14-1">нет</label><br>
+                        <input type="radio" id="a14-2" value="есть" data-score="0.5" name="a14" onclick="showDiv('d14'); checkPage5();"><label for="a14-2">есть</label>
+                        <div id="d14" style="display: none;">
+                            <ul class="forcheckboxes">
+                                <li><input type="checkbox" id="d14-1" value="губы" data-score="0.5" name="d14-1"><label for="d14-1">губы</label></li>
+                                <li><input type="checkbox" id="d14-2" value="зубы" data-score="0.5" name="d14-2"><label for="d14-2">зубы</label></li>
+                                <li><input type="checkbox" id="d14-3" value="укорочение уздечки языка" data-score="0.5" name="d14-3"><label for="d14-3">укорочение уздечки языка</label></li>
+                                <li><input type="checkbox" id="d14-4" value="укорочение уздечки нижней губы" data-score="0.5" name="d14-4"><label for="d14-4">укорочение уздечки нижней губы</label></li>
+                                <li><input type="checkbox" id="d14-5" value="укорочение уздечки верхней губы" data-score="0.5" name="d14-5"><label for="d14-5">укорочение уздечки верхней губы</label></li>
+                                <li><input type="checkbox" id="d14-6" value="другое" data-score="0.5" name="d14-6"><label for="d14-6">другое</label></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Нарушение произношения звуков</p>
+                        <input type="radio" id="a15-1" value="нет" data-score="0" name="a15" onclick="hideDiv('d15'); checkPage5();"><label for="a15-1">нет</label><br>
+                        <input type="radio" id="a15-2" value="есть" data-score="0.5" name="a15" onclick="showDiv('d15'); checkPage5();"><label for="a15-2">есть</label>
+                        <div id="d15" style="display: none;">
+                            <ul class="forcheckboxes">
+                                <li><input type="checkbox" id="d15-1" value="1-2 звука" data-score="0.5" name="d15-1"><label for="d15-1">1-2 звука</label></li>
+                                <li><input type="checkbox" id="d15-2" value="более 2 звуков" data-score="0.5" name="d15-2"><label for="d15-2">более 2 звуков</label></li>
+                                <li><input type="checkbox" id="d15-3" value="множественные нарушения" data-score="0.5" name="d15-3"><label for="d15-3">множественные нарушения</label></li>
+                                <li><label for='d15-4'>Какие звуки?</label><br><input type=text class=text id=d15-4 name=d15-4></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Нарушение темпа речи</p>
+                        <input type="radio" id="a16-1" value="нет" data-score="0" name="a16" onclick="hideDiv('d16'); checkPage5();"><label for="a16-1">нет</label><br>
+                        <input type="radio" id="a16-2" value="есть" data-score="0.5" name="a16" onclick="showDiv('d16'); checkPage5();"><label for="a16-2">есть</label>
+                        <div id="d16" style="display: none;">
+                            <ul class="forcheckboxes">
+                                <li><input type="checkbox" id="d16-1" value="ускоренная речь" data-score="0.5" name="d16-1"><label for="d16-1">ускоренная речь</label></li>
+                                <li><input type="checkbox" id="d16-2" value="замедленная речь" data-score="0.5" name="d16-2"><label for="d16-2">замедленная речь</label></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Заикание, запинки</p>
+                        <input type="radio" id="a17-1" value="нет" data-score="0" name="a17" onclick="checkPage5();"><label for="a17-1">нет</label><br>
+                        <input type="radio" id="a17-2" value="есть" data-score="0.5" name="a17" onclick="checkPage5();"><label for="a17-2">есть</label>
+                    </li>
+                    <li>
+                        <p class="answer">Нарушение понимания речи</p>
+                        <input type="radio" id="a18-1" value="нет" data-score="0" name="a18" onclick="checkPage5();"><label for="a18-1">нет</label><br>
+                        <input type="radio" id="a18-2" value="есть" data-score="0.5" name="a18" onclick="checkPage5();"><label for="a18-2">есть</label>
+                    </li>
+                    <li>
+                        <p class="answer">Словарный запас</p>
+                        <input type="radio" id="a19-1" value="норма" data-score="0" name="a19" onclick="checkPage5();"><label for="a19-1">норма</label><br>
+                        <input type="radio" id="a19-2" value="нарушен" data-score="0.5" name="a19" onclick="checkPage5();"><label for="a19-2">нарушен</label>
+                    </li>
+                </ol><br>
+                <button onclick="backPage('page5', 'page4'); return false;">Назад</button>
+                <button onclick="nextPage('page5', 'page6'); return false;" id="page5button" disabled>Далее</button>
+                <p style="display: block;" id="page5mess">* если кнопка не активна, пожалуйста, проверьте корректное заполнение всех полей на этой странице</p>
+            </section>
+
+            <section id="page6" style="display: none;">
+                <ol type="1" start="20">
+                    <li>
+                        <p class="answer">Наличие вредных миофункциональных привычек:</p>
+                        <input type="radio" id="a22-1" value="нет" data-score="0" name="a22" onclick="hideDiv('d22'); checkPage6();"><label for="a22-1">нет</label><br>
+                        <input type="radio" id="a22-2" value="есть" data-score="0.5" name="a22" onclick="showDiv('d22'); checkPage6();"><label for="a22-2">есть</label>
+                        <div id="d22" style="display: none;">
+                            <ul class="forcheckboxes">
+                                <li><input type="checkbox" id="d22-1" value="облизывание губ" data-score="0.5" name="d22-1"><label for="d22-1">облизывание губ</label></li>
+                                <li><input type="checkbox" id="d22-2" value="сосание верхней / нижней губы, языка, пальцев, соски, иных предметов" data-score="0.5" name="d22-2"><label for="d22-2">сосание верхней / нижней губы, языка, пальцев, соски, иных предметов</label></li>
+                                <li><input type="checkbox" id="d22-3" value="грызение ногтей" data-score="0.5" name="d22-3"><label for="d22-3">грызение ногтей</label></li>
+                                <li><input type="checkbox" id="d22-4" value="прокладываение языка между зубами" data-score="0.5" name="d22-4"><label for="d22-4">прокладываение языка между зубами</label></li>
+                                <li><input type="checkbox" id="d22-5" value="привычка давить языком на зубы" data-score="0.5" name="d22-5"><label for="d22-5">привычка давить языком на зубы</label></li>
+                                <li><input type="checkbox" id="d22-6" value="скрежет зубами" data-score="0.5" name="d22-6"><label for="d22-6">скрежет зубами</label></li>
+                                <li><input type="checkbox" id="d22-7" value="апноэ сна - задержка дыхания" data-score="0.5" name="d22-7"><label for="d22-7">апноэ сна - задержка дыхания</label></li>
+                                <li><input type="checkbox" id="d22-9" value="подкладываение кулачка под щеку" data-score="0.5" name="d22-9"><label for="d22-9">подкладываение кулачка под щеку</label></li>
+                                <li><label for='d22-10'>другое:</label><br><input type=text class=text id=d22-10 name=d22-10></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ol><br>
+                <p class="h">Проверьте, пожалуйста, корректное заполнение всех полей. Форму можно отправить только один раз.</p>
+                <p class="h"><b>Внимание!</b><br>Нажимая кнопку "Отправить", Вы даете согласие на обработку персональных данных и возможное использование <b>обезличенных</b> показателей в научно-исследовательских целях.</p>
+                <br><br>
+                <button onclick="backPage('page6', 'page5'); return false;">Назад</button>
+                <button type="submit" onclick="nextPage('page6', 'page7'); showResult(); return true;" id="page6button" disabled>Отправить</button>
+                <p style="display: block;" id="page6mess">* если кнопка не активна, пожалуйста, проверьте корректное заполнение всех полей на этой странице</p>
+            </section>
+
+            <section id="page7" style="display: none;">
+                <p class="h">Благодарим Вас за прохождение теста!</p>
+                <p>В сумме Вы набрали <span id="score"></span> баллов.</p>
+                <p>Баллы по разделу "Неврологические жалобы": <span id='scorenev'></span>.</p>
+                <p>Баллы по разделу "Остеопатические жалобы": <span id='scoreost'></span>.</p>
+                <p>Баллы по разделу "Стоматологические жалобы": <span id='scoresto'></span>.</p>
+                <p>Баллы по разделу "Логопедические жалобы": <span id='scorelog'></span>.</p>
+                <p>Данные были отправлены врачу.</p>
+                <br><br>
+                <button onclick="location.href='index.html'; return false;">Назад ко всем тестам</button>
+            </section>
+        </form>
+
+        <script>
+            const url = "https://script.google.com/macros/s/AKfycbxnHdJin1k3zL29B5KWa-FvOjkDQwmaq_KBI6YiRPl7Ks1sOYZ0QzAda_xk1GliBAQu/exec";
+            const form = document.querySelector("#form");
+            form.addEventListener('submit', async(e) => {
+                e.preventDefault();
+
+                await fetch(url, { method: 'POST', body: new FormData(form)})
+                    .then(response => console.log('Success!', response))
+                    .catch(error => console.error('Error!', error.message));
+            });
+        </script>
+    </body>
+</html>

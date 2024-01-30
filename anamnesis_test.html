@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <title>Перинатальный анамнез о раннем развитии ребенка</title>
+        <link rel="stylesheet" href="styles.css">
+        <script src="scripts.js"></script>
+        <script>
+            function checkPage1() {
+                var active = (
+                    document.querySelector('#fio').value.length > 3 &&
+                    document.querySelector('#fiochild').value.length > 3 &&
+
+                    document.querySelectorAll('input[type="radio"]:checked').length >= 2 &&
+
+                    document.querySelector('#bday').value &&
+                    document.querySelector('#bdaychild').value &&
+
+                    document.querySelector('#age').value.length > 0 &&
+                    document.querySelector('#agechild').value.length > 0
+                );
+                document.getElementById('page1button').disabled = !active;
+                if (active) hideDiv('page1mess');
+                else showDiv('page1mess');
+            }
+            function checkPage2() {
+                if (document.querySelector('#dontknow').checked) {
+                    document.getElementById('page2button').disabled = false;
+                    return;
+                }
+                var a1 = document.querySelector('#a1').value;
+                var radios = document.querySelectorAll('input[type="radio"][name^="a"]:checked').length >= 3;
+                var checkboxes = document.querySelectorAll('input[type="checkbox"][name^="a"]:checked').length >= 1 || document.querySelector('#a3-6').value;
+                var active = (a1 && radios && checkboxes);
+                document.getElementById('page2button').disabled = !active;
+                if (active) hideDiv('page2mess');
+                else showDiv('page2mess');
+            }
+            function checkPage3() {
+                if (document.querySelector('#dontknow').checked) {
+                    document.getElementById('page3button').disabled = false;
+                    return;
+                }
+                var active = document.querySelectorAll('input[type="radio"][name^="a"]:checked').length >= 11;
+                document.getElementById('page3button').disabled = !active;
+                if (active) hideDiv('page3mess');
+                else showDiv('page3mess');
+            }
+            function checkPage4() {
+                if (document.querySelector('#dontknow').checked) {
+                    document.getElementById('page4button').disabled = false;
+                    return;
+                }
+                var apgr1 = document.querySelector('#apgar1').value;
+                var apgr2 = document.querySelector('#apgar2').value;
+                var mass = document.querySelector('#mass').value;
+                var heig = document.querySelector('#height').value;
+                var radios = document.querySelectorAll('input[type="radio"][name^="a"]:checked').length >= 20;
+                var active = (apgr1 && apgr2 && mass && heig && radios);
+                document.getElementById('page4button').disabled = !active;
+                if (active) hideDiv('page4mess');
+                else showDiv('page4mess');
+            }
+            function checkPage5() {
+                if (document.querySelector('#dontknow').checked) {
+                    document.getElementById('page5button').disabled = false;
+                    return;
+                }
+                var crawl = document.querySelector('#crawl').value;
+                var sit = document.querySelector('#sit').value;
+                var go = document.querySelector('#go').value;
+                var a37 = document.querySelector('#a37').value;
+                var radios = document.querySelectorAll('input[type="radio"][name^="a"]:checked').length >= 34;
+                var active = (crawl && sit && go && radios && a37);
+                document.getElementById('page5button').disabled = !active;
+                if (active) hideDiv('page5mess');
+                else showDiv('page5mess');
+            }
+            function checkPage6() {
+                var active = (
+                    document.querySelectorAll('input[type="radio"][name^="a"]:checked').length >= 38 &&
+                    (
+                        (document.querySelector('#a43-1').checked || document.querySelector('#a43-2').value) &&
+                        (document.querySelector('#a43-3').checked || document.querySelector('#a43-4').checked || document.querySelector('#a43-5').checked || document.querySelector('#a43-6').value)
+                    )
+                );
+                document.getElementById('page6button').disabled = !active;
+                if (active) hideDiv('page6mess');
+                else showDiv('page6mess');
+            }
+            function showResult() {
+                let score = 0;
+
+                score += document.querySelectorAll('input[type="radio"][data-score="0.5"]:checked').length * 0.5;
+                score += document.querySelectorAll('input[type="radio"][data-score="-0.5"]:checked').length * -0.5;
+                score += document.querySelectorAll('input[type="radio"][data-score="-1"]:checked').length * -1;
+                score += document.querySelectorAll('input[type="radio"][data-score="1"]:checked').length * 1;
+                score += document.querySelectorAll('input[type="radio"][data-score="2"]:checked').length * 2;
+
+                score += document.querySelectorAll('input[type="checkbox"][data-score="0.5"]:checked').length * 0.5;
+                score += document.querySelectorAll('input[type="checkbox"][data-score="-0.5"]:checked').length * -0.5;
+
+                document.getElementById("score").innerHTML = score;
+            }
+            function showIdontKnow() {
+                if (document.querySelector('#dontknow').checked) {
+                    showDiv('page2dontknow');
+                    showDiv('page3dontknow');
+                    showDiv('page4dontknow');
+                    showDiv('page5dontknow');
+                } else {
+                    hideDiv('page2dontknow');
+                    hideDiv('page3dontknow');
+                    hideDiv('page4dontknow');
+                    hideDiv('page5dontknow');
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <h1>Перинатальный анамнез и информация о раннем развитии ребенка</h1>
+        <h4>(заполняется по данным медицинской документации, амбулаторной карты и со слов родителей)</h4>
+        <form action="#" id="form">
+            <section id="page1" style="display: block;">
+                <p class="h"><b>Обратите внимание!</b><br>Почти все поля являются обязательными для заполнения и, чтобы перейти к следующей странице анкеты, необходимо заполнить текущую!</p>
+                <p class="h">Заполните следующий раздел сведениями <b><i>о ребенке</i></b></p>
+                <label for="fio">Введите ФИО ребенка (полностью):</label><br>
+                <input type="text" class="long text" id="fiochild" name="fiochild" onkeyup="checkPage1();" placeholder="Фамилия Имя Отчество ребенка" required autofocus><br>
+                <p>Укажите пол ребенка:</p>
+                <input type="radio" name="genderchild" id="genderchild1" value="м" onclick="checkPage1();"><label for="genderchild1">мужской</label><br>
+                <input type="radio" name="genderchild" id="genderchild2" value="ж" onclick="checkPage1();"><label for="genderchild2">женский</label><br>
+                <p><label for='bdaychild'>Дата рождения ребенка:</label></p>
+                <input type="date" id="bdaychild" name="birthdaychild" class="text" onchange="checkPage1();">
+                <p><label for='agechild'>Укажите возраст ребенка:</label></p>
+                <input type="text" class="text" id="agechild" name="agechild" placeholder="Возраст ребенка" onkeyup="checkPage1();"> лет
+                <p class="h">Заполните следующий раздел сведениями <b><i>о родителе</i></b></p>
+                <label for="fio">Введите Ваше ФИО (полностью):</label><br>
+                <input type="text" class="long text" id="fio" name="fio" onkeyup="checkPage1();" placeholder="Фамилия Имя Отчество родителя" required><br>
+                <p>Укажите, кем Вы приходитесь ребенку:</p>
+                <input type="radio" name="gender" id="gender1" value="мать" onclick="checkPage1();"><label for="gender1">мать</label><br>
+                <input type="radio" name="gender" id="gender2" value="отец" onclick="checkPage1();"><label for="gender2">отец</label><br>
+                <input type="radio" name="gender" id="gender3" value="бабушка / дедушка" onclick="checkPage1();"><label for="gender3">бабушка или дедушка</label><br>
+                <input type="radio" name="gender" id="gender4" value="опекун" onclick="checkPage1();"><label for="gender4">опекун</label><br>
+                <input type="radio" name="gender" id="gender5" value="другое" onclick="checkPage1();"><label for="gender5">другое</label>
+                <p><label for='bday'>Укажите Вашу дату рождения:</label></p>
+                <input type="date" id="bday" name="birthday" class="text" required onchange="checkPage1();">
+                <p><label for='age'>Введите Ваш возраст:</label></p>
+                <input type="text" class="text" id="age" name="age" required placeholder="Ваш Возраст" onkeyup="checkPage1();"> лет
+                <p class="answer"><input type="checkbox" onclick="showIdontKnow();" name="dontknow" value="не знаю или не помню" id="dontknow"><label for='dontknow'>Если Вы не помните или не знаете, как развивался ребенок, отметьте этот флажок.</label></p>
+                <button onclick="location.href='index.html'; return false;">Назад ко всем тестам</button>
+                <button onclick="nextPage('page1', 'page2'); checkPage2(); return false;" id="page1button" disabled>Далее</button>
+                <p style="display: block;" id="page1mess">* если кнопка не активна, пожалуйста, проверьте корректное заполнение всех полей на этой странице</p>
+            </section>
+
+            <section id="page2" style="display: none;">
+                <h3>Беременность</h3>
+                <p class="h" id="page2dontknow" style="display: none;">Если Вы не обладаете данной информацией, то можете сразу нажать "далее". Однако, если какие-то данные Вам известны, Вам нужно их заполнить.</p>
+                <ol type="1" start="1">
+                    <li>
+                        <p class="answer"><label for='a1'>Порядковый номер настоящей беременности</label></p>
+                        <input type="number" class="text" id="a1" name="a1" onkeyup="if (this.value > 1) showDiv('d1'); else hideDiv('d1'); checkPage2();">
+                        <div id="d1" style="display: none;">
+                            <p>Наличие предыдущих:</p>
+                            <input type="checkbox" id="d1-1" value="абортов" data-score="0.5" name="d1-1"><label for="d1-1">абортов</label><br>
+                            <input type="checkbox" id="d1-2" value="неразвивающихся беременностей, выкидышей" data-score="0.5" name="d1-2"><label for="d1-2">неразвивающихся беременностей, выкидышей</label>
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Внутриутробные инфекции</p>
+                        <input type="radio" id="a2-1" value="нет" data-score="0" name="a2" onclick="checkPage2();"><label for="a2-1">нет</label><br>
+                        <input type="radio" id="a2-2" value="выявлены" data-score="0.5" name="a2" onclick="checkPage2();"><label for="a2-2">выявлены</label><br>
+                        <input type="radio" id="a2-3" value="риск ВУИ (внутриутробной инфекции)" data-score="0.5" name="a2" onclick="checkPage2();"><label for="a2-3">риск ВУИ (внутриутробной инфекции)</label>
+                    </li>
+                    <li>
+                        <p class="answer">Вредные привычки и профессиональные вредности во время беременности</p>
+                        <input type="checkbox" id="a3-1" value="нет" data-score="0" name="a3-1" onclick="checkPage2();"><label for="a3-1">нет</label><br>
+                        <input type="checkbox" id="a3-2" value="курение" data-score="0.5" name="a3-2" onclick="checkPage2();"><label for="a3-2">курение</label><br>
+                        <input type="checkbox" id="a3-3" value="употребление алкоголя" data-score="0.5" name="a3-3" onclick="checkPage2();"><label for="a3-3">употребление алкоголя</label><br>
+                        <input type="checkbox" id="a3-4" value="работа за компьютером" data-score="0.5" name="a3-4" onclick="checkPage2();"><label for="a3-4">работа за компьютером</label><br>
+                        <input type="checkbox" id="a3-5" value="частое использование гаджета" data-score="0.5" name="a3-5" onclick="checkPage2();"><label for="a3-5">частое использование гаджета</label>
+                        <p><label for="a3-6">Другое:</label></p>
+                        <input type="text" class="text" id="a3-6" name="a3-6" data-score="0.5" onkeyup="checkPage2();">
+                    </li>
+                    <li>
+                        <p class="answer">Фон беременности</p>
+                        <input type="radio" id="a4-1" value="благоприятный" data-score="0" name="a4" onclick="checkPage2();"><label for="a4-1">благоприятный</label><br>
+                        <input type="radio" id="a4-2" value="неблагоприятный (на фоне частых заболеваний; стрессов)" data-score="0.5" name="a4" onclick="checkPage2();"><label for="a4-2">неблагоприятный (на фоне частых заболеваний; стрессов)</label>
+                    </li>
+                    <li>
+                        <p class="answer">Патология беременности</p>
+                        <input type="radio" id="a5-1" value="нет" data-score="0" name="a5" onclick="hideDiv('d5'); checkPage2();"><label for="a5-1">нет</label><br>
+                        <input type="radio" id="a5-2" value="отмечалась" data-score="0.5" name="a5" onclick="showDiv('d5'); checkPage2();"><label for="a5-2">отмечалась</label>
+                        <div id="d5" style="display: none;">
+                            <ul class="forcheckboxes">
+                                <li><input type="checkbox" id="d5-1" value="в 1 триместре" data-score="0.5" name="d5-1"><label for="d5-1">в 1 триместре</label></li>
+                                <li><input type="checkbox" id="d5-2" value="во 2 триместре" data-score="0.5" name="d5-2"><label for="d5-2">во 2 триместре</label></li>
+                                <li><input type="checkbox" id="d5-3" value="в 3 триместре" data-score="0.5" name="d5-3"><label for="d5-3">в 3 триместре</label></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ol><br>
+                <button onclick="backPage('page2', 'page1'); return false;">Назад</button>
+                <button onclick="nextPage('page2', 'page3'); checkPage3(); return false;" id="page2button" disabled>Далее</button>
+                <p style="display: block;" id="page2mess">* если кнопка не активна, пожалуйста, проверьте корректное заполнение всех полей на этой странице</p>
+            </section>
+
+            <section id="page3" style="display: none;">
+                <h3>Роды</h3>
+                <p class="h" id="page3dontknow" style="display: none;">Если Вы не обладаете данной информацией, то можете сразу нажать "далее". Однако, если какие-то данные Вам известны, Вам нужно их заполнить.</p>
+                <ol type="1" start="6">
+                    <li>
+                        <input type="radio" id="a6-1" value="первые" data-score="0" name="a6" onclick="checkPage3();"><label for="a6-1">первые</label><br>
+                        <input type="radio" id="a6-2" value="повторные" data-score="0.5" name="a6" onclick="checkPage3();"><label for="a6-2">повторные</label>
+                    </li><br>
+                    <li>
+                        <input type="radio" id="a7-1" value="самостоятельные" data-score="0" name="a7" onclick="hideDiv('d7'); checkPage3();"><label for="a7-1">самостоятельные</label><br>
+                        <input type="radio" id="a7-2" value="оперативные (кесарево сечение)" data-score="0.5" name="a7" onclick="showDiv('d7'); checkPage3();"><label for="a7-2">оперативные (кесарево сечение)</label>
+                        <div id="d7" style="display: none;">
+                            <ul class="forcheckboxes">
+                                <li><input type="radio" id="d7-1" value="плановое" data-score="0.5" name="d7"><label for="d7-1">плановое</label></li>
+                                <li><input type="radio" id="d7-2" value="экстренное" data-score="0.5" name="d7"><label for="d7-2">экстренное</label></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Анестезия в родах</p>
+                        <input type="radio" id="a8-1" value="нет" data-score="0" name="a8" onclick="checkPage3();"><label for="a8-1">нет</label><br>
+                        <input type="radio" id="a8-2" value="применялась" data-score="0.5" name="a8" onclick="checkPage3();"><label for="a8-2">применялась</label>
+                    </li>
+                    <li>
+                        <p class="answer">Продолжительность родов</p>
+                        <input type="radio" id="a9-1" value="физиологические (15-20 часов – у первородящих; 10-12 часов – у повторнородящих) или кесарево сечение" data-score="0" name="a9" onclick="hideDiv('d9'); checkPage3();"><label for="a9-1">физиологические (15-20 часов – у первородящих; 10-12 часов – у повторнородящих) или кесарево сечение</label><br>
+                        <input type="radio" id="a9-2" value="изменена" data-score="0.5" name="a9" onclick="showDiv('d9'); checkPage3();"><label for="a9-2">изменена</label>
+                        <div id="d9" style="display: none;">
+                            <ul class="forcheckboxes">
+                                <li><input type="radio" id="d9-1" value="быстрые (менее 6 часов у первородящих, менее 4 часов у повторнородящих)" data-score="0.5" name="d9"><label for="d9-1">быстрые (менее 6 часов у первородящих, менее 4 часов у повторнородящих)</label></li>
+                                <li><input type="radio" id="d9-2" value="стремительные (менее 4 часов у первородящих, менее 2 часов у повторнородящих)" data-score="0.5" name="d9"><label for="d9-2">стремительные (менее 4 часов у первородящих, менее 2 часов у повторнородящих)</label></li>
+                                <li><input type="radio" id="d9-3" value="затяжные (более 18 часов)" data-score="0.5" name="d9"><label for="d9-3">затяжные (более 18 часов)</label></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Предлежание плода</p>
+                        <input type="radio" id="a10-1" value="головное" data-score="0" name="a10" onclick="checkPage3();"><label for="a10-1">головное</label><br>
+                        <input type="radio" id="a10-2" value="тазовое" data-score="0.5" name="a10" onclick="checkPage3();"><label for="a10-2">тазовое</label><br>
+                        <input type="radio" id="a10-3" value="ножное поперечное" data-score="0.5" name="a10" onclick="checkPage3();"><label for="a10-3">ножное поперечное</label><br>
+                        <input type="radio" id="a10-4" value="асинклитическое" data-score="0.5" name="a10" onclick="checkPage3();"><label for="a10-4">асинклитическое</label>
+                    </li>
+                    <li>
+                        <p class="answer">Проводилась ли родостимуляция или медикаментозный сон-отдых?</p>
+                        <input type="radio" id="a11-1" value="нет" data-score="0" name="a11" onclick="checkPage3();"><label for="a11-1">нет</label><br>
+                        <input type="radio" id="a11-2" value="родостимуляция" data-score="0.5" name="a11" onclick="checkPage3();"><label for="a11-2">родостимуляция</label><br>
+                        <input type="radio" id="a11-3" value="мед. сон-отдых" data-score="0.5" name="a11" onclick="checkPage3();"><label for="a11-3">мед. сон-отдых</label>
+                    </li>
+                    <li>
+                        <p class="answer">Применение акушерских пособий</p>
+                        <input type="radio" id="a12-1" value="не применялись" data-score="0" name="a12" onclick="hideDiv('d12'); checkPage3();"><label for="a12-1">не применялись</label><br>
+                        <input type="radio" id="a12-2" value="применялись" data-score="0.5" name="a12" onclick="showDiv('d12'); checkPage3();"><label for="a12-2">применялись</label>
+                        <div id="d12" style="display: none;">
+                            <ul class="forcheckboxes">
+                                <li><input type="checkbox" id="d12-1" value="выдавливание плода" data-score="0.5" name="d12-1"><label for="d12-1">выдавливание плода</label></li>
+                                <li><input type="checkbox" id="d12-2" value="щипцы" data-score="0.5" name="d12-2"><label for="d12-2">щипцы</label></li>
+                                <li><input type="checkbox" id="d12-3" value="вакуум-экстракция" data-score="0.5" name="d12-3"><label for="d12-3">вакуум-экстракция</label></li>
+                                <li><input type="checkbox" id="d12-4" value="другое" data-score="0.5" name="d12-4"><label for="d12-4">другое</label></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Течение родов</p>
+                        <input type="radio" id="a13-1" value="норма" data-score="0" name="a13" onclick="hideDiv('d13'); checkPage3();"><label for="a13-1">норма</label><br>
+                        <input type="radio" id="a13-2" value="осложненное" data-score="0.5" name="a13" onclick="showDiv('d13'); checkPage3();"><label for="a13-2">осложненное</label>
+                        <div id="d13" style="display: none;">
+                            <ul class="forcheckboxes">
+                                <li><input type="checkbox" id="d13-1" value="раннее излитие околоплодных вод" data-score="0.5" name="d13-1"><label for="d13-1">раннее излитие околоплодных вод</label></li>
+                                <li><input type="checkbox" id="d13-2" value="длительный безводный период" data-score="0.5" name="d13-2"><label for="d13-2">длительный безводный период</label></li>
+                                <li><input type="checkbox" id="d13-3" value="обвитие пуповины вокруг шеи" data-score="0.5" name="d13-3"><label for="d13-3">обвитие пуповины вокруг шеи</label></li>
+                                <li><input type="checkbox" id="d13-4" value="слабость родовой деятельности" data-score="0.5" name="d13-4"><label for="d13-4">слабость родовой деятельности</label></li>
+                                <li><input type="checkbox" id="d13-5" value="кровотечение в родах" data-score="0.5" name="d13-5"><label for="d13-5">кровотечение в родах</label></li>
+                                <li><input type="checkbox" id="d13-6" value="асфиксия" data-score="0.5" name="d13-6"><label for="d13-6">асфиксия</label></li>
+                                <li><input type="checkbox" id="d13-7" value="риск ВУИ" data-score="0.5" name="d13-7"><label for="d13-7">риск ВУИ</label></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ol><br>
+                <button onclick="backPage('page3', 'page2'); return false;">Назад</button>
+                <button onclick="nextPage('page3', 'page4'); checkPage4(); return false;" id="page3button" disabled>Далее</button>
+                <p style="display: block;" id="page3mess">* если кнопка не активна, пожалуйста, проверьте корректное заполнение всех полей на этой странице</p>
+            </section>
+
+            <section id="page4" style="display: none;">
+                <h3>Постнатальный период</h3>
+                <p class="h" id="page4dontknow" style="display: none;">Если Вы не обладаете данной информацией, то можете сразу нажать "далее". Однако, если какие-то данные Вам известны, Вам нужно их заполнить.</p>
+                <p class="h">Параметры тела при рождении</p>
+                <ol type="1" start="14">
+                    <li>
+                        <p class="answer"><label for='apgar1'>Оценка по шкале Апгар на 1 мин.:</label></p>
+                        <input type="text" class="text" id="apgar1" name="apgar1" onchange="checkPage4();">
+                        <p class="answer"><label for='apgar2'>Оценка по шкале Апгар на 5 мин.:</label></p>
+                        <input type="text" class="text" id="apgar2" name="apgar2" onchange="checkPage4();">
+                    </li>
+                    <li>
+                        <p class="answer"><label for='mass'>Масса тела при рождении (г):</label></p>
+                        <input type="number" class="text" id="mass" name="mass" onchange="checkPage4();">
+                    </li>
+                    <li>
+                        <p class="answer"><label for='height'>Рост при рождении (см):</label></p>
+                        <input type="number" class="text" id="height" name="height" onchange="checkPage4();">
+                    </li>
+                    <li>
+                        <p class="answer">Состояние новорожденного</p>
+                        <input type="radio" id="a15-1" value="ребенок доношенный" data-score="0" name="a15" onclick="hideDiv('d15'); checkPage4();"><label for="a15-1">ребенок доношенный</label><br>
+                        <input type="radio" id="a15-2" value="недоношенный" data-score="0.5" name="a15" onclick="showDiv('d15'); checkPage4();"><label for="a15-2">недоношенный</label>
+                        <div id="d15" style="display: none;">
+                            <p>На каком сроке (в неделях)?</p>
+                            <input type="text" class="text" name="d15">
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Сосание груди</p>
+                        <input type="radio" id="a17-1" value="сосал активно" data-score="0" name="a17" onclick="hideDiv('d17'); checkPage4();"><label for="a17-1">сосал активно</label><br>
+                        <input type="radio" id="a17-2" value="проблемы с сосанием" data-score="0.5" name="a17" onclick="showDiv('d17'); checkPage4();"><label for="a17-2">проблемы с сосанием</label>
+                        <div id="d17" style="display: none;">
+                            <ul class="forcheckboxes">
+                                <li><input type="checkbox" id="d17-1" value="сосал вяло" data-score="0.5" name="d17-1"><label for="d17-1">сосал вяло</label></li>
+                                <li><input type="checkbox" id="d17-2" value="захлебывался" data-score="0.5" name="d17-2"><label for="d17-2">захлебывался</label></li>
+                                <li><input type="checkbox" id="d17-3" value="часто срыгивал" data-score="0.5" name="d17-3"><label for="d17-3">часто срыгивал</label></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Перенесенные заболевания на 1 году жизни</p>
+                        <input type="radio" id="a18-1" value="нет" data-score="0" name="a18" onclick="hideDiv('d18'); checkPage4();"><label for="a18-1">нет</label><br>
+                        <input type="radio" id="a18-2" value="были" data-score="0.5" name="a18" onclick="showDiv('d18'); checkPage4();"><label for="a18-2">были</label>
+                        <div id="d18" style="display: none;">
+                            <p>Какие?</p>
+                            <input type="text" class="text" name="d18">
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Генетические заболевания</p>
+                        <input type="radio" id="a16-1" value="нет" data-score="0" name="a16" onclick="hideDiv('d16'); checkPage4();"><label for="a16-1">нет</label><br>
+                        <input type="radio" id="a16-2" value="были" data-score="0.5" name="a16" onclick="showDiv('d16'); checkPage4();"><label for="a16-2">были</label>
+                        <div id="d16" style="display: none;">
+                            <p>Какие?</p>
+                            <input type="text" class="text" name="d16">
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Неврологические нарушения</p>
+                        <input type="radio" id="a29-1" value="нет" data-score="0" name="a29" onclick="hideDiv('d29'); checkPage4();"><label for="a29-1">нет</label><br>
+                        <input type="radio" id="a29-2" value="есть ППЦНС (перинатальное повреждение ЦНС)" data-score="1" name="a29" onclick="showDiv('d29'); checkPage4();"><label for="a29-2">есть ППЦНС (перинатальное повреждение ЦНС)</label>
+                        <div id="d29" style="display: none;">
+                            <ul class="forcheckboxes">
+                                <li><input type="checkbox" id="d29-1" value="нарушение тонуса" data-score="0.5" name="d29-1"><label for="d29-1">нарушение тонуса</label></li>
+                                <li><input type="checkbox" id="d29-2" value="пирамидная недостаточность" data-score="0.5" name="d29-2"><label for="d29-2">пирамидная недостаточность</label></li>
+                                <li><input type="checkbox" id="d29-3" value="мозжечковая недостаточность" data-score="0.5" name="d29-3"><label for="d29-3">мозжечковая недостаточность</label></li>
+                                <li><input type="checkbox" id="d29-4" value="кривошения" data-score="0.5" name="d29-4"><label for="d29-4">кривошения</label></li>
+                                <li><label for="d29-5">другое (написать):</label><br><input type="text" class="text" name="d29-5"></li>
+                            </ul>
+                        </div><br>
+                        <input type="radio" id="a29-3" value="ДЦП" data-score="2" name="a29" onclick="hideDiv('d29'); checkPage4();"><label for="a29-3">ДЦП</label>
+                    </li>
+                    <li>
+                        <p class="answer">Хирургические вмешательства</p>
+                        <input type="radio" id="a19-1" value="нет" data-score="0" name="a19" onclick="hideDiv('d19'); checkPage4();"><label for="a19-1">нет</label><br>
+                        <input type="radio" id="a19-2" value="были" data-score="0.5" name="a19" onclick="showDiv('d19'); checkPage4();"><label for="a19-2">были</label>
+                        <div id="d19" style="display: none;">
+                            <p>Какие?</p>
+                            <input type="text" class="text" name="d19">
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Травмы</p>
+                        <input type="radio" id="a20-1" value="нет" data-score="0" name="a20" onclick="hideDiv('d20'); checkPage4();"><label for="a20-1">нет</label><br>
+                        <input type="radio" id="a20-2" value="были" data-score="0.5" name="a20" onclick="showDiv('d20'); checkPage4();"><label for="a20-2">были</label>
+                        <div id="d20" style="display: none;">
+                            <p>Какие?</p>
+                            <input type="text" class="text" name="d20">
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Негативные реакции на прививки</p>
+                        <input type="radio" id="a21-1" value="нет" data-score="0" name="a21" onclick="hideDiv('d21'); checkPage4();"><label for="a21-1">нет</label><br>
+                        <input type="radio" id="a21-2" value="были" data-score="0.5" name="a21" onclick="showDiv('d21'); checkPage4();"><label for="a21-2">были</label>
+                        <div id="d21" style="display: none;">
+                            <p>Какие?</p>
+                            <input type="text" class="text" name="d21">
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Аллергические реакции</p>
+                        <input type="radio" id="a22-1" value="не отмечались" data-score="0.5" name="a22" onclick="hideDiv('d22'); checkPage4();"><label for="a22-1">не отмечались</label><br>
+                        <input type="radio" id="a22-2" value="отмечались" data-score="0.5" name="a22" onclick="showDiv('d22'); checkPage4();"><label for="a22-2">отмечались</label>
+                        <div id="d22" style="display: none;">
+                            <p>На что были аллергические реакции?</p>
+                            <input type="text" class="text" name="d22">
+                        </div>
+                    </li>
+                </ol><br>
+                <button onclick="backPage('page4', 'page3'); return false;">Назад</button>
+                <button onclick="nextPage('page4', 'page5'); checkPage5(); return false;" id="page4button" disabled>Далее</button>
+                <p style="display: block;" id="page4mess">* если кнопка не активна, пожалуйста, проверьте корректное заполнение всех полей на этой странице</p>
+            </section>
+
+            <section id="page5" style="display: none;">
+                <h3>Раннее психомоторное развитие</h3>
+                <p class="h" id="page5dontknow" style="display: none;">Если Вы не обладаете данной информацией, то можете сразу нажать "далее". Однако, если какие-то данные Вам известны, Вам нужно их заполнить.</p>
+                <ol type="1" start="26">
+                    <li>
+                        <p class="answer"><label for='crawl'>Когда ребенок начал ползать?</label></p>
+                        <input type="text" class="text" id="crawl" name="crawl" onchange="checkPage5();">
+                    </li>
+                    <li>
+                        <p class="answer"><label for='sit'>Сидеть?</label></p>
+                        <input type="text" class="text" id="sit" name="sit" onchange="checkPage5();">
+                    </li>
+                    <li>
+                        <p class="answer"><label for='go'>Ходить?</label></p>
+                        <input type="text" class="text" id="go" name="go" onchange="checkPage5();">
+                    </li>
+                    <li>
+                        <p class="answer">Начал сидеть в возрасте около 6 мес.</p>
+                        <input type="radio" id="a23-1" value="да (норма)" data-score="0" name="a23" onclick="checkPage5();"><label for="a23-1">да (норма)</label><br>
+                        <input type="radio" id="a23-2" value="позже" data-score="-0.5" name="a23" onclick="checkPage5();"><label for="a23-2">позже</label><br>
+                        <input type="radio" id="a23-3" value="раньше" data-score="0.5" name="a23" onclick="checkPage5();"><label for="a23-3">раньше</label>
+                    </li>
+                    <li>
+                        <p class="answer">Начал ползать с 6 до 8 мес.</p>
+                        <input type="radio" id="a24-1" value="да (норма)" data-score="0" name="a24" onclick="checkPage5();"><label for="a24-1">да (норма)</label><br>
+                        <input type="radio" id="a24-2" value="старше 8 мес." data-score="-0.5" name="a24" onclick="checkPage5();"><label for="a24-2">старше 8 мес.</label><br>
+                        <input type="radio" id="a24-3" value="не ползал вообще" data-score="-1" name="a24" onclick="checkPage5();"><label for="a24-3">не ползал вообще</label><br>
+                        <input type="radio" id="a24-4" value="мало ползал" data-score="0.5" name="a24" onclick="checkPage5();"><label for="a24-4">мало ползал</label><br>
+                        <input type="radio" id="a24-5" value="раньше 6 мес." data-score="1" name="a24" onclick="checkPage5();"><label for="a24-5">раньше 6 мес.</label>
+                    </li>
+                    <li>
+                        <p class="answer">Начал стоять у опоры до 11 мес.</p>
+                        <input type="radio" id="a25-1" value="да (норма)" data-score="0" name="a25" onclick="checkPage5();"><label for="a25-1">да (норма)</label><br>
+                        <input type="radio" id="a25-2" value="старше 11 мес." data-score="-0.5" name="a25" onclick="checkPage5();"><label for="a25-2">старше 11 мес.</label><br>
+                        <input type="radio" id="a25-3" value="не стоял у опоры вообще" data-score="-1" name="a25" onclick="checkPage5();"><label for="a25-3">не стоял у опоры вообще</label><br>
+                        <input type="radio" id="a25-4" value="в пределах 1 мес." data-score="0.5" name="a25" onclick="checkPage5();"><label for="a25-4">в пределах 1 мес.</label><br>
+                        <input type="radio" id="a25-5" value="раньше" data-score="1" name="a25" onclick="checkPage5();"><label for="a25-5">раньше</label>
+                    </li>
+                    <li>
+                        <p class="answer">Начал ходить с 12 - 15 мес.</p>
+                        <input type="radio" id="a26-1" value="да (норма)" data-score="0" name="a26" onclick="checkPage5();"><label for="a26-1">да (норма)</label><br>
+                        <input type="radio" id="a26-2" value="до 15 мес." data-score="-0.5" name="a26" onclick="checkPage5();"><label for="a26-2">до 15 мес.</label><br>
+                        <input type="radio" id="a26-3" value="после 15 мес." data-score="-1" name="a26" onclick="checkPage5();"><label for="a26-3">после 15 мес.</label><br>
+                        <input type="radio" id="a26-4" value="раньше" data-score="1" name="a26" onclick="checkPage5();"><label for="a26-4">раньше</label>
+                    </li>
+                    <li>
+                        <p class="answer">Начал узнавать близких в возрасте до 3 мес.</p>
+                        <input type="radio" id="a27-1" value="да (норма)" data-score="0" name="a27" onclick="checkPage5();"><label for="a27-1">да (норма)</label><br>
+                        <input type="radio" id="a27-2" value="позже" data-score="-1" name="a27" onclick="checkPage5();"><label for="a27-2">позже</label><br>
+                        <input type="radio" id="a27-3" value="раньше" data-score="1" name="a27" onclick="checkPage5();"><label for="a27-3">раньше</label>
+                    </li>
+                    <li>
+                        <p class="answer">Речевое развитие на 1 году – понимание речи и первые формы активной речи</p>
+                        <input type="radio" id="a28-1" value="соответствует возрасту" data-score="0" name="a28" onclick="checkPage5();"><label for="a28-1">соответствует возрасту</label><br>
+                        <input type="radio" id="a28-2" value="задержано" data-score="-1" name="a28" onclick="checkPage5();"><label for="a28-2">задержано</label><br>
+                        <input type="radio" id="a28-3" value="понимал от рождения" data-score="1" name="a28" onclick="checkPage5();"><label for="a28-3">понимал от рождения</label>
+                    </li>
+                    <li>
+                        <p class="answer">Количество зубов в 1 год</p>
+                        <input type="radio" id="a30-1" value="соответствует возрасту (6-8 зубов)" data-score="0" name="a30" onclick="checkPage5();"><label for="a30-1">соответствует возрасту (6-8 зубов)</label><br>
+                        <input type="radio" id="a30-2" value="меньше 6-8 зубов" data-score="-1" name="a30" onclick="checkPage5();"><label for="a30-2">меньше 6-8 зубов</label><br>
+                        <input type="radio" id="a30-3" value="больше 6-8 зубов" data-score="1" name="a30" onclick="checkPage5();"><label for="a30-3">больше 6-8 зубов</label>
+                    </li>
+                    <li>
+                        <p class="answer">Начало гуления</p>
+                        <input type="radio" id="a31-1" value="норма (с 2-3 мес.)" data-score="0" name="a31" onclick="checkPage5();"><label for="a31-1">норма (с 2-3 мес.)</label><br>
+                        <input type="radio" id="a31-2" value="позже 3 мес." data-score="-0.5" name="a31" onclick="checkPage5();"><label for="a31-2">позже 3 мес.</label><br>
+                        <input type="radio" id="a31-3" value="отсутствует" data-score="-1" name="a31" onclick="checkPage5();"><label for="a31-3">отсутствует</label><br>
+                        <input type="radio" id="a31-4" value="раньше 2 мес." data-score="1" name="a31" onclick="checkPage5();"><label for="a31-4">раньше 2 мес.</label>
+                    </li>
+                    <li>
+                        <p class="answer">Начало лепета</p>
+                        <input type="radio" id="a32-1" value="норма (с 4-6 мес.)" data-score="0" name="a32" onclick="checkPage5();"><label for="a32-1">норма (с 4-6 мес.)</label><br>
+                        <input type="radio" id="a32-2" value="задержано, позже 7 мес." data-score="-0.5" name="a32" onclick="checkPage5();"><label for="a32-2">задержано, позже 7 мес.</label><br>
+                        <input type="radio" id="a32-3" value="не было, отсутствует" data-score="-1" name="a32" onclick="checkPage5();"><label for="a32-3">не было, отсутствует</label><br>
+                        <input type="radio" id="a32-4" value="раньше 4 мес." data-score="1" name="a32" onclick="checkPage5();"><label for="a32-4">раньше 4 мес.</label>
+                    </li>
+                    <li>
+                        <p class="answer">Первые слова</p>
+                        <input type="radio" id="a33-1" value="норма (11 мес. - 1 год 2 мес.)" data-score="0" name="a33" onclick="checkPage5();"><label for="a33-1">норма (11 мес. - 1 год 2 мес.)</label><br>
+                        <input type="radio" id="a33-2" value="позже 1,5 лет" data-score="-0.5" name="a33" onclick="checkPage5();"><label for="a33-2">позже 1,5 лет</label><br>
+                        <input type="radio" id="a33-3" value="слова отсутствуют" data-score="-1" name="a33" onclick="checkPage5();"><label for="a33-3">слова отсутствуют</label><br>
+                        <input type="radio" id="a33-4" value="раньше 11 месяцев" data-score="1" name="a33" onclick="checkPage5();"><label for="a33-4">раньше 11 месяцев</label>
+                    </li>
+                    <li>
+                        <p class="answer">Первые фразы</p>
+                        <input type="radio" id="a34-1" value="норма (1 г. 3 мес. – 2 года)" data-score="0" name="a34" onclick="checkPage5();"><label for="a34-1">норма (1 г. 3 мес. – 2 года)</label><br>
+                        <input type="radio" id="a34-2" value="позже 2 лет" data-score="-0.5" name="a34" onclick="checkPage5();"><label for="a34-2">позже 2 лет</label><br>
+                        <input type="radio" id="a34-3" value="фразы отсутствуют" data-score="-1" name="a34" onclick="checkPage5();"><label for="a34-3">фразы отсутствуют</label><br>
+                        <input type="radio" id="a34-4" value="раньше 1 г. 3 мес." data-score="1" name="a34" onclick="checkPage5();"><label for="a34-4">раньше 1 г. 3 мес.</label>
+                    </li>
+                    <li>
+                        <p class="answer">Использование жестов</p>
+                        <input type="radio" id="a35-1" value="норма (сопровождает эмоциональную речь)" data-score="0" name="a35" onclick="checkPage5();"><label for="a35-1">норма (сопровождает эмоциональную речь)</label><br>
+                        <input type="radio" id="a35-2" value="использует вместе с некоторыми речевыми элементами" data-score="-0.5" name="a35" onclick="checkPage5();"><label for="a35-2">использует вместе с некоторыми речевыми элементами</label><br>
+                        <input type="radio" id="a35-3" value="использует вместо речи в качестве активной ее замены" data-score="-1" name="a35" onclick="checkPage5();"><label for="a35-3">использует вместо речи в качестве активной ее замены</label><br>
+                        <input type="radio" id="a35-4" value="совсем не использует жесты" data-score="1" name="a35" onclick="checkPage5();"><label for="a35-4">совсем не использует жесты</label>
+                    </li>
+                    <li>
+                        <p class="answer">Кормление на 1 году жизни</p>
+                        <input type="radio" id="a36-1" value="грудное" data-score="0" name="a36" onclick="checkPage5();"><label for="a36-1">грудное</label><br>
+                        <input type="radio" id="a36-2" value="искусственное" data-score="-1" name="a36" onclick="checkPage5();"><label for="a36-2">искусственное</label><br>
+                        <input type="radio" id="a36-3" value="смешанное" data-score="-0.5" name="a36" onclick="checkPage5();"><label for="a36-3">смешанное</label>
+                    </li>
+                    <li>
+                        <p class="answer"><label for='a37'>До какого возраста ребенок был на естественном вскармливании? Укажите конкретный возраст (лет, месяцев)</label></p>
+                        <input type="text" class="text" id="a37" name="a37" onkeyup="checkPage5();">
+                    </li>
+                    <li>
+                        <p class="answer">Особенности пищевого поведения</p>
+                        <input type="radio" id="a38-1" value="норма" data-score="0" name="a38" onclick="checkPage5();"><label for="a38-1">норма</label><br>
+                        <input type="radio" id="a38-2" value="ест мало" data-score="-0.5" name="a38" onclick="checkPage5();"><label for="a38-2">ест мало</label><br>
+                        <input type="radio" id="a38-3" value="почти не ест" data-score="-1" name="a38" onclick="checkPage5();"><label for="a38-3">почти не ест</label><br>
+                        <input type="radio" id="a38-4" value="переедает" data-score="1" name="a38" onclick="checkPage5();"><label for="a38-4">переедает</label>
+                    </li>
+                </ol><br>
+                <button onclick="backPage('page5', 'page4'); return false;">Назад</button>
+                <button onclick="nextPage('page5', 'page6'); return false;" id="page5button" disabled>Далее</button>
+                <p style="display: block;" id="page5mess">* если кнопка не активна, пожалуйста, проверьте корректное заполнение всех полей на этой странице</p>
+            </section>
+
+            <section id="page6" style="display: none;">
+                <h3>Текущее состояние</h3>
+                <ol type="1" start="44">
+                    <li>
+                        <p class="answer">Характер двигательной активности</p>
+                        <input type="radio" id="a39-1" value="нормальная" data-score="0" name="a39" onclick="hideDiv('d39'); checkPage6();"><label for="a39-1">нормальная</label><br>
+                        <input type="radio" id="a39-2" value="активность снижена" data-score="-1" name="a39" onclick="showDiv('d39'); checkPage6();"><label for="a39-2">активность снижена</label>
+                        <div id="d39" style="display: none;">
+                            <ul class="forcheckboxes">
+                                <li><input type="checkbox" id="d39-1" value="вялый, заторможен" data-score="-0.5" name="d39-1"><label for="d39-1">вялый, заторможен</label></li>
+                                <li><input type="checkbox" id="d39-2" value="неловкий, часто падает, спотыкается" data-score="-0.5" name="d39-2"><label for="d39-2">неловкий, часто падает, спотыкается</label></li>
+                                <li><input type="checkbox" id="d39-3" value="неповоротлив, трудности координации движений" data-score="-0.5" name="d39-3"><label for="d39-3">неповоротлив, трудности координации движений</label></li>
+                            </ul>
+                        </div><br>
+                        <input type="radio" id="a39-3" value="гиперактивен, расторможен, импульсивен" data-score="1" name="a39" onclick="hideDiv('d39'); checkPage6();"><label for="a39-3">гиперактивен, расторможен, импульсивен</label>
+                    </li>
+                    <li>
+                        <p class="answer">Поведение ребенка дома и в коллективе</p>
+                        <input type="radio" id="a40-1" value="адекватное" data-score="0" name="a40" onclick="checkPage6();"><label for="a40-1">адекватное</label><br>
+                        <input type="radio" id="a40-2" value="неадекватное" data-score="-1" name="a40" onclick="checkPage6();"><label for="a40-2">неадекватное</label>
+                    </li>
+                    <li>
+                        <p class="answer">Ребенок:</p>
+                        <input type="radio" id="a41-1" value="правша" data-score="0" name="a41" onclick="checkPage6();"><label for="a41-1">правша</label><br>
+                        <input type="radio" id="a41-2" value="левша" data-score="0" name="a41" onclick="checkPage6();"><label for="a41-2">левша</label><br>
+                        <input type="radio" id="a41-3" value="латерализация полушарий не определена" data-score="0" name="a41" onclick="checkPage6();"><label for="a41-3">латерализация полушарий не определена</label>
+                    </li>
+                    <li>
+                        <p class="answer">Переучивался на другую руку</p>
+                        <input type="radio" id="a42-1" value="нет" data-score="0" name="a42" onclick="checkPage6();"><label for="a42-1">нет</label><br>
+                        <input type="radio" id="a42-2" value="да" data-score="-1" name="a42" onclick="checkPage6();"><label for="a42-2">да</label>
+                    </li>
+                    <li>
+                        <p class="answer">С какого возраста и после каких событий начались волнующие Вас изменения?</p>
+                        <ul class="forcheckboxes">
+                            <li><input type="checkbox" id="a43-1" value="с самого рождения" data-score="0" name="a43-1" onclick="checkPage6();"><label for="a43-1">с самого рождения</label></li>
+                            <li><label for="a43-2">С какого времени?</label><br><input type="text" class="text" id="a43-2" name="a43-2" onchange="checkPage6();"></li>
+                            <li><input type="checkbox" id="a43-3" value="после физических травм" data-score="0" name="a43-3" onclick="checkPage6();"><label for="a43-3">после физических травм</label></li>
+                            <li><input type="checkbox" id="a43-4" value="после эмоциональных травм" data-score="0" name="a43-4" onclick="checkPage6();"><label for="a43-4">после эмоциональных травм</label></li>
+                            <li><input type="checkbox" id="a43-5" value="после прививки" data-score="0" name="a43-5" onclick="checkPage6();"><label for="a43-5">после прививки</label></li>
+                            <li><label for="a43-6">После чего-то другого? (напишите)</label><br><input type="text" class="text" id="a43-6" name="a43-6" onchange="checkPage6();"></li>
+                        </ul>
+                    </li>
+                </ol><br>
+                <p class="h">Проверьте, пожалуйста, корректное заполнение всех полей. Форму можно отправить только один раз.</p>
+                <p class="h"><b>Внимание!</b><br>Нажимая кнопку "Отправить", Вы даете согласие на обработку персональных данных и возможное использование <b>обезличенных</b> показателей в научно-исследовательских целях.</p>
+                <br><br>
+                <button onclick="backPage('page6', 'page5'); return false;">Назад</button>
+                <button type="submit" onclick="nextPage('page6', 'page7'); showResult(); return true;" id="page6button" disabled>Отправить</button>
+                <p style="display: block;" id="page6mess">* если кнопка не активна, пожалуйста, проверьте корректное заполнение всех полей на этой странице</p>
+            </section>
+
+            <section id="page7" style="display: none;">
+                <p class="h">Благодарим Вас за прохождение теста!</p>
+                <p>Общая сумма баллов отягощенности перинатального анамнеза: <span id="score"></span>.</p>
+                <p>Данные были отправлены врачу.</p>
+                <br><br>
+                <button onclick="location.href='index.html'; return false;">Назад ко всем тестам</button>
+            </section>
+        </form>
+
+        <script>
+            const url = "https://script.google.com/macros/s/AKfycbxjOnV429X7JaLnK8dPqxdNFyxygM-RE1KKHNGaDm5O77KJ5s2OUY0N1CcZQE0OIY_g2Q/exec";
+            const form = document.querySelector("#form");
+            form.addEventListener('submit', async(e) => {
+                e.preventDefault();
+
+                await fetch(url, { method: 'POST', body: new FormData(form)})
+                    .then(response => console.log('Success!', response))
+                    .catch(error => console.error('Error!', error.message));
+            });
+        </script>
+    </body>
+</html>

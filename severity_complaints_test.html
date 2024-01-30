@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Основные положительные сдвиги</title>
+        <link rel="stylesheet" href="styles.css">
+        <script src="scripts.js"></script>
+        <script>
+            function showResult() {
+                let score = 0;
+
+                score += document.querySelectorAll('input[type="radio"][value="1"]:checked').length;
+                score += document.querySelectorAll('input[type="radio"][value="2"]:checked').length * 2;
+                score += document.querySelectorAll('input[type="radio"][value="3"]:checked').length * 3;
+                score += document.querySelectorAll('input[type="radio"][value="4"]:checked').length * 4;
+                score += document.querySelectorAll('input[type="radio"][value="5"]:checked').length * 5;
+                score += document.querySelectorAll('input[type="radio"][value="6"]:checked').length * 6;
+                score += document.querySelectorAll('input[type="radio"][value="7"]:checked').length * 7;
+                score += document.querySelectorAll('input[type="radio"][value="8"]:checked').length * 8;
+                score += document.querySelectorAll('input[type="radio"][value="9"]:checked').length * 9;
+                score += document.querySelectorAll('input[type="radio"][value="10"]:checked').length * 10;
+                
+                document.getElementById("score").innerHTML = score;
+            }
+            function checkPage1() {
+                var active = (
+                    document.querySelector('#fio').value.length > 3 &&
+                    document.querySelector('#fiochild').value.length > 3 &&
+
+                    document.querySelectorAll('input[type="radio"]:checked').length >= 3 &&
+
+                    document.querySelector('#bday').value &&
+                    document.querySelector('#bdaychild').value &&
+
+                    document.querySelector('#age').value.length > 0 &&
+                    document.querySelector('#agechild').value.length > 0
+                );
+                document.getElementById('page1button').disabled = !active;
+                if (active) hideDiv('page1mess');
+                else showDiv('page1mess');
+            }
+            function checkPage2() {
+                var radios = document.querySelector('input[type="radio"][name="firstoragain"]:checked').value == 'again' ?
+                    document.querySelectorAll('input[type="radio"][name^="a"]:checked').length >= 16 :
+                    document.querySelectorAll('input[type="radio"][name^="a"]:checked').length >= 15;
+                var a8 = document.getElementById('a8').value.length > 1;
+                var active = (radios && a8);
+                document.getElementById('page2button').disabled = !active;
+                if (active) hideDiv('page2mess');
+                else showDiv('page2mess');
+            }
+        </script>
+    </head>
+    <body>
+        <h1>Специфические жалобы и их выраженность</h1>
+        <form id="form" action="#">
+            <section id="page1" style="display: block;">
+                <p class="h"><b>Обратите внимание!</b><br>Почти все поля являются обязательными для заполнения и, чтобы перейти к следующей странице анкеты, необходимо заполнить текущую!</p>
+                <p class="h">Заполните следующий раздел сведениями <b><i>о ребенке</i></b></p>
+                <label for="fio">Введите ФИО ребенка (полностью):</label><br>
+                <input type="text" class="long text" id="fiochild" name="fiochild" onkeyup="checkPage1();" placeholder="Фамилия Имя Отчество ребенка" required autofocus><br>
+                <p>Укажите пол ребенка:</p>
+                <input type="radio" name="genderchild" id="genderchild1" value="мужской" onclick="checkPage1();"><label for="genderchild1">мужской</label><br>
+                <input type="radio" name="genderchild" id="genderchild2" value="женский" onclick="checkPage1();"><label for="genderchild2">женский</label><br>
+                <p><label for='bdaychild'>Дата рождения ребенка:</label></p>
+                <input type="date" id="bdaychild" name="birthdaychild" class="text" onchange="checkPage1();">
+                <p><label for='agechild'>Укажите возраст ребенка:</label></p>
+                <input type="text" class="text" id="agechild" name="agechild" placeholder="Возраст ребенка" onkeyup="checkPage1();"> лет
+                <p class="h">Заполните следующий раздел сведениями <b><i>о родителе</i></b></p>
+                <p>Обратите внимание, что этот тест необходимо пройти обоим родителям (независимо друг от друга - по отдельности).</p>
+                <label for="fio">Введите Ваше ФИО (полностью):</label><br>
+                <input type="text" class="long text" id="fio" name="fio" onkeyup="checkPage1();" placeholder="Фамилия Имя Отчество родителя" required><br>
+                <p>Укажите, кем Вы приходитесь ребенку:</p>
+                <input type="radio" name="gender" id="gender1" value="мать" onclick="checkPage1();"><label for="gender1">мать</label><br>
+                <input type="radio" name="gender" id="gender2" value="отец" onclick="checkPage1();"><label for="gender2">отец</label><br>
+                <input type="radio" name="gender" id="gender3" value="бабушка / дедушка" onclick="checkPage1();"><label for="gender3">бабушка или дедушка</label><br>
+                <input type="radio" name="gender" id="gender4" value="опекун" onclick="checkPage1();"><label for="gender4">опекун</label><br>
+                <input type="radio" name="gender" id="gender5" value="другое" onclick="checkPage1();"><label for="gender5">другое</label>
+                <p><label for='bday'>Укажите Вашу дату рождения:</label></p>
+                <input type="date" id="bday" name="birthday" class="text" required onchange="checkPage1();">
+                <p><label for='age'>Введите Ваш возраст:</label></p>
+                <input type="text" class="text" id="age" name="age" required placeholder="Ваш Возраст" onkeyup="checkPage1();"> лет
+                <p class="answer">Вы заполняете эту анкету впервые или повторно?</p>
+                <input type="radio" id="first" value="впервые" name="firstoragain" onclick="hideDiv('foragain'); checkPage1();"><label for="first">впервые</label><br>
+                <input type="radio" id="again" value="повторно" name="firstoragain" onclick="showDiv('foragain'); checkPage1();"><label for="again">повторно</label>
+                <br><br>
+                <button onclick="location.href='index.html'; return false;">Назад ко всем тестам</button>
+                <button onclick="nextPage('page1', 'page2'); return false;" id="page1button" disabled>Далее</button>
+                <p style="display: block;" id="page1mess">* если кнопка не активна, пожалуйста, проверьте корректное заполнение всех полей на этой странице</p>
+            </section>
+            <section id="page2" style="display: none;">
+                <p class="h">В данном тесте необходимо оценить от 0 до 10 баллов выраженность клинических симптомов, где 0 баллов - полное отсутствие симптома, 10 баллов - наиболее выраженное его проявление.</p>
+                <ol type="1" start="1">
+                    <li>
+                        <p class="answer">Отсутствие заинтересованности окружающим миром (0 - заинтересрван полностью, 10 - совсем не заинтересован)</p>
+                        <input type="radio" id="a1-1" value="0" name="a1" onclick="checkPage2();"><label for="a1-1">0</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a1-2" value="1" name="a1" onclick="checkPage2();"><label for="a1-2">1</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a1-3" value="2" name="a1" onclick="checkPage2();"><label for="a1-3">2</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a1-4" value="3" name="a1" onclick="checkPage2();"><label for="a1-4">3</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a1-5" value="4" name="a1" onclick="checkPage2();"><label for="a1-5">4</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a1-6" value="5" name="a1" onclick="checkPage2();"><label for="a1-6">5</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a1-7" value="6" name="a1" onclick="checkPage2();"><label for="a1-7">6</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a1-8" value="7" name="a1" onclick="checkPage2();"><label for="a1-8">7</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a1-9" value="8" name="a1" onclick="checkPage2();"><label for="a1-9">8</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a1-10" value="9" name="a1" onclick="checkPage2();"><label for="a1-10">9</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a1-11" value="10" name="a1" onclick="checkPage2();"><label for="a1-11">10</label>
+                    </li>
+                    <li>
+                        <p class="answer">Агрессия, возбуждение, гнев. Оцените интенсивность возбуждения: 0 - отсутствие названных симптомов, 10 - их максимальная выраженность.</p>
+                        <input type="radio" id="a2-1" value="0" name="a2" onclick="hideDiv('d2'); checkPage2();"><label for="a2-1">0</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a2-2" value="1" name="a2" onclick="showDiv('d2'); checkPage2();"><label for="a2-2">1</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a2-3" value="2" name="a2" onclick="showDiv('d2'); checkPage2();"><label for="a2-3">2</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a2-4" value="3" name="a2" onclick="showDiv('d2'); checkPage2();"><label for="a2-4">3</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a2-5" value="4" name="a2" onclick="showDiv('d2'); checkPage2();"><label for="a2-5">4</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a2-6" value="5" name="a2" onclick="showDiv('d2'); checkPage2();"><label for="a2-6">5</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a2-7" value="6" name="a2" onclick="showDiv('d2'); checkPage2();"><label for="a2-7">6</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a2-8" value="7" name="a2" onclick="showDiv('d2'); checkPage2();"><label for="a2-8">7</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a2-9" value="8" name="a2" onclick="showDiv('d2'); checkPage2();"><label for="a2-9">8</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a2-10" value="9" name="a2" onclick="showDiv('d2'); checkPage2();"><label for="a2-10">9</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a2-11" value="10" name="a2" onclick="showDiv('d2'); checkPage2();"><label for="a2-11">10</label><br>
+                        <div id="d2" style="display: none;">
+                            <br><label for="d2-1">Примерная продолжительность одного приступа возбуждения по времени</label><br>
+                            <input type="text" class="text" id="d2-1" placeholder="около 2 минут" autocomplete="off" name="d2-1"><br>
+                            <br><label>Что успокаивает?</label><br>
+                            <ul class="forcheckboxes">
+                                <li><input type="checkbox" id="d2-2" value="поощрение сладостями" name="d2-2"><label for="d2-2">поощрение сладостями</label></li>
+                                <li><input type="checkbox" id="d2-3" value="наказание" name="d2-3"><label for="d2-3">наказание</label></li>
+                                <li><input type="checkbox" id="d2-4" value="игнорирование" name="d2-4"><label for="d2-4">игнорирование</label></li>
+                                <li><input type="checkbox" id="d2-5" value="отвлекание" name="d2-5"><label for="d2-5">отвлекание</label></li>
+                                <li><input type="checkbox" id="d2-6" value="ничего не помогает" name="d2-6"><label for="d2-6">ничего не помогает</label></li>
+                                <li><label for='d2-7'>Другое</label><br><input type=text class=text id='d2-7' name='d2-7' placeholder="любимая игра" autocomplete="off"></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer">Ночной храп (0 - нет, 10 - сильно выржен, присутствует на всем протяжении сна)</p>
+                        <input type="radio" id="a3-1" value="0" name="a3" onclick="checkPage2();"><label for="a3-1">0</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a3-2" value="1" name="a3" onclick="checkPage2();"><label for="a3-2">1</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a3-3" value="2" name="a3" onclick="checkPage2();"><label for="a3-3">2</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a3-4" value="3" name="a3" onclick="checkPage2();"><label for="a3-4">3</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a3-5" value="4" name="a3" onclick="checkPage2();"><label for="a3-5">4</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a3-6" value="5" name="a3" onclick="checkPage2();"><label for="a3-6">5</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a3-7" value="6" name="a3" onclick="checkPage2();"><label for="a3-7">6</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a3-8" value="7" name="a3" onclick="checkPage2();"><label for="a3-8">7</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a3-9" value="8" name="a3" onclick="checkPage2();"><label for="a3-9">8</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a3-10" value="9" name="a3" onclick="checkPage2();"><label for="a3-10">9</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a3-11" value="10" name="a3" onclick="checkPage2();"><label for="a3-11">10</label>
+                    </li>
+                    <li>
+                        <p class="answer"><label for='a8'>Сколько времени занимает сон (в часах)?</label></p>
+                        <input type="text" class="text" id="a8" required placeholder="около 9 часов" onkeyup="checkPage2();" autocomplete="off" name="a8">
+                    </li>
+                    <li>
+                        <p class="answer">Заинтересованность окружающим миром (0 - заинтересован в полной мере, 10 - полное отсутствие заинтересованности)</p>
+                        <input type="radio" id="a9-1" value="0" name="a9" onclick="checkPage2();"><label for="a9-1">0</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a9-2" value="1" name="a9" onclick="checkPage2();"><label for="a9-2">1</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a9-3" value="2" name="a9" onclick="checkPage2();"><label for="a9-3">2</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a9-4" value="3" name="a9" onclick="checkPage2();"><label for="a9-4">3</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a9-5" value="4" name="a9" onclick="checkPage2();"><label for="a9-5">4</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a9-6" value="5" name="a9" onclick="checkPage2();"><label for="a9-6">5</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a9-7" value="6" name="a9" onclick="checkPage2();"><label for="a9-7">6</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a9-8" value="7" name="a9" onclick="checkPage2();"><label for="a9-8">7</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a9-9" value="8" name="a9" onclick="checkPage2();"><label for="a9-9">8</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a9-10" value="9" name="a9" onclick="checkPage2();"><label for="a9-10">9</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a9-11" value="10" name="a9" onclick="checkPage2();"><label for="a9-11">10</label>
+                    </li>
+                    <li>
+                        <p class="answer">Заинтересованность окружающими людьми  (0 - заинтересован в полной мере, 10 - полное отсутствие заинтересованности)</p>
+                        <input type="radio" id="a10-1" value="0" name="a10" onclick="checkPage2();"><label for="a10-1">0</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a10-2" value="1" name="a10" onclick="checkPage2();"><label for="a10-2">1</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a10-3" value="2" name="a10" onclick="checkPage2();"><label for="a10-3">2</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a10-4" value="3" name="a10" onclick="checkPage2();"><label for="a10-4">3</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a10-5" value="4" name="a10" onclick="checkPage2();"><label for="a10-5">4</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a10-6" value="5" name="a10" onclick="checkPage2();"><label for="a10-6">5</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a10-7" value="6" name="a10" onclick="checkPage2();"><label for="a10-7">6</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a10-8" value="7" name="a10" onclick="checkPage2();"><label for="a10-8">7</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a10-9" value="8" name="a10" onclick="checkPage2();"><label for="a10-9">8</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a10-10" value="9" name="a10" onclick="checkPage2();"><label for="a10-10">9</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a10-11" value="10" name="a10" onclick="checkPage2();"><label for="a10-11">10</label>
+                    </li>
+                    <li>
+                        <p class="answer">Наличие самоагрессии (0 - отсутствие, 10 - бьется головой, наносит себе повреждения и увечья)</p>
+                        <input type="radio" id="a11-1" value="0" name="a11" onclick="checkPage2();"><label for="a11-1">0</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a11-2" value="1" name="a11" onclick="checkPage2();"><label for="a11-2">1</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a11-3" value="2" name="a11" onclick="checkPage2();"><label for="a11-3">2</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a11-4" value="3" name="a11" onclick="checkPage2();"><label for="a11-4">3</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a11-5" value="4" name="a11" onclick="checkPage2();"><label for="a11-5">4</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a11-6" value="5" name="a11" onclick="checkPage2();"><label for="a11-6">5</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a11-7" value="6" name="a11" onclick="checkPage2();"><label for="a11-7">6</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a11-8" value="7" name="a11" onclick="checkPage2();"><label for="a11-8">7</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a11-9" value="8" name="a11" onclick="checkPage2();"><label for="a11-9">8</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a11-10" value="9" name="a11" onclick="checkPage2();"><label for="a11-10">9</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a11-11" value="10" name="a11" onclick="checkPage2();"><label for="a11-11">10</label>
+                    </li>
+                    <li>
+                        <p class="answer">Социальное взаимодействие - восприятие и выполнение просьб (0 - хорошее, 10 - совсем не воспринимает и не выполняет просьбы)</p>
+                        <input type="radio" id="a12-1" value="0" name="a12" onclick="checkPage2();"><label for="a12-1">0</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a12-2" value="1" name="a12" onclick="checkPage2();"><label for="a12-2">1</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a12-3" value="2" name="a12" onclick="checkPage2();"><label for="a12-3">2</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a12-4" value="3" name="a12" onclick="checkPage2();"><label for="a12-4">3</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a12-5" value="4" name="a12" onclick="checkPage2();"><label for="a12-5">4</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a12-6" value="5" name="a12" onclick="checkPage2();"><label for="a12-6">5</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a12-7" value="6" name="a12" onclick="checkPage2();"><label for="a12-7">6</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a12-8" value="7" name="a12" onclick="checkPage2();"><label for="a12-8">7</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a12-9" value="8" name="a12" onclick="checkPage2();"><label for="a12-9">8</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a12-10" value="9" name="a12" onclick="checkPage2();"><label for="a12-10">9</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a12-11" value="10" name="a12" onclick="checkPage2();"><label for="a12-11">10</label>
+                    </li>
+                    <li>
+                        <p class="answer">Словарный запас (0 - хороший и достаточный, 10 - полное отсутствие речи)</p>
+                        <input type="radio" id="a13-1" value="0" name="a13" onclick="checkPage2();"><label for="a13-1">0</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a13-2" value="1" name="a13" onclick="checkPage2();"><label for="a13-2">1</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a13-3" value="2" name="a13" onclick="checkPage2();"><label for="a13-3">2</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a13-4" value="3" name="a13" onclick="checkPage2();"><label for="a13-4">3</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a13-5" value="4" name="a13" onclick="checkPage2();"><label for="a13-5">4</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a13-6" value="5" name="a13" onclick="checkPage2();"><label for="a13-6">5</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a13-7" value="6" name="a13" onclick="checkPage2();"><label for="a13-7">6</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a13-8" value="7" name="a13" onclick="checkPage2();"><label for="a13-8">7</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a13-9" value="8" name="a13" onclick="checkPage2();"><label for="a13-9">8</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a13-10" value="9" name="a13" onclick="checkPage2();"><label for="a13-10">9</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a13-11" value="10" name="a13" onclick="checkPage2();"><label for="a13-11">10</label>
+                    </li>
+                    <li>
+                        <p class="answer">Жестовая речь (0 - норма (сопровождает эмоциональную речь), 10 - использует вместо речи в качестве активной ее замены)</p>
+                        <input type="radio" id="a14-1" value="0" name="a14" onclick="checkPage2();"><label for="a14-1">0</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a14-2" value="1" name="a14" onclick="checkPage2();"><label for="a14-2">1</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a14-3" value="2" name="a14" onclick="checkPage2();"><label for="a14-3">2</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a14-4" value="3" name="a14" onclick="checkPage2();"><label for="a14-4">3</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a14-5" value="4" name="a14" onclick="checkPage2();"><label for="a14-5">4</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a14-6" value="5" name="a14" onclick="checkPage2();"><label for="a14-6">5</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a14-7" value="6" name="a14" onclick="checkPage2();"><label for="a14-7">6</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a14-8" value="7" name="a14" onclick="checkPage2();"><label for="a14-8">7</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a14-9" value="8" name="a14" onclick="checkPage2();"><label for="a14-9">8</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a14-10" value="9" name="a14" onclick="checkPage2();"><label for="a14-10">9</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a14-11" value="10" name="a14" onclick="checkPage2();"><label for="a14-11">10</label>
+                    </li>
+                    <li>
+                        <p class="answer">Эмоциональное взаимодействие с людьми (0 - полное, хорошее, 10 - отсутствие эмоционального взаимодействия)</p>
+                        <input type="radio" id="a15-1" value="0" name="a15" onclick="checkPage2();"><label for="a15-1">0</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a15-2" value="1" name="a15" onclick="checkPage2();"><label for="a15-2">1</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a15-3" value="2" name="a15" onclick="checkPage2();"><label for="a15-3">2</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a15-4" value="3" name="a15" onclick="checkPage2();"><label for="a15-4">3</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a15-5" value="4" name="a15" onclick="checkPage2();"><label for="a15-5">4</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a15-6" value="5" name="a15" onclick="checkPage2();"><label for="a15-6">5</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a15-7" value="6" name="a15" onclick="checkPage2();"><label for="a15-7">6</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a15-8" value="7" name="a15" onclick="checkPage2();"><label for="a15-8">7</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a15-9" value="8" name="a15" onclick="checkPage2();"><label for="a15-9">8</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a15-10" value="9" name="a15" onclick="checkPage2();"><label for="a15-10">9</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a15-11" value="10" name="a15" onclick="checkPage2();"><label for="a15-11">10</label>
+                    </li>
+                    <li>
+                        <p class="answer">Наличие глазного контакта (0 - хороший, полный  контакт, 10 - полное отсутствие глазного контакта)</p>
+                        <input type="radio" id="a16-1" value="0" name="a16" onclick="checkPage2();"><label for="a16-1">0</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a16-2" value="1" name="a16" onclick="checkPage2();"><label for="a16-2">1</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a16-3" value="2" name="a16" onclick="checkPage2();"><label for="a16-3">2</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a16-4" value="3" name="a16" onclick="checkPage2();"><label for="a16-4">3</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a16-5" value="4" name="a16" onclick="checkPage2();"><label for="a16-5">4</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a16-6" value="5" name="a16" onclick="checkPage2();"><label for="a16-6">5</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a16-7" value="6" name="a16" onclick="checkPage2();"><label for="a16-7">6</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a16-8" value="7" name="a16" onclick="checkPage2();"><label for="a16-8">7</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a16-9" value="8" name="a16" onclick="checkPage2();"><label for="a16-9">8</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a16-10" value="9" name="a16" onclick="checkPage2();"><label for="a16-10">9</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a16-11" value="10" name="a16" onclick="checkPage2();"><label for="a16-11">10</label>
+                    </li>
+                    <li>
+                        <p class="answer">Речь (0- хорошая, 10 - полное отсутствие речи)</p>
+                        <input type="radio" id="a17-1" value="0" name="a17" onclick="checkPage2();"><label for="a17-1">0</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a17-2" value="1" name="a17" onclick="checkPage2();"><label for="a17-2">1</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a17-3" value="2" name="a17" onclick="checkPage2();"><label for="a17-3">2</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a17-4" value="3" name="a17" onclick="checkPage2();"><label for="a17-4">3</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a17-5" value="4" name="a17" onclick="checkPage2();"><label for="a17-5">4</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a17-6" value="5" name="a17" onclick="checkPage2();"><label for="a17-6">5</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a17-7" value="6" name="a17" onclick="checkPage2();"><label for="a17-7">6</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a17-8" value="7" name="a17" onclick="checkPage2();"><label for="a17-8">7</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a17-9" value="8" name="a17" onclick="checkPage2();"><label for="a17-9">8</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a17-10" value="9" name="a17" onclick="checkPage2();"><label for="a17-10">9</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a17-11" value="10" name="a17" onclick="checkPage2();"><label for="a17-11">10</label>
+                    </li>
+                    <li>
+                        <p class="answer">Метаболизм (0 - пища хорошо переваривается и усваивается, 10 - полностью нарушено)</p>
+                        <input type="radio" id="a18-1" value="0" name="a18" onclick="checkPage2();"><label for="a18-1">0</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a18-2" value="1" name="a18" onclick="checkPage2();"><label for="a18-2">1</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a18-3" value="2" name="a18" onclick="checkPage2();"><label for="a18-3">2</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a18-4" value="3" name="a18" onclick="checkPage2();"><label for="a18-4">3</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a18-5" value="4" name="a18" onclick="checkPage2();"><label for="a18-5">4</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a18-6" value="5" name="a18" onclick="checkPage2();"><label for="a18-6">5</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a18-7" value="6" name="a18" onclick="checkPage2();"><label for="a18-7">6</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a18-8" value="7" name="a18" onclick="checkPage2();"><label for="a18-8">7</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a18-9" value="8" name="a18" onclick="checkPage2();"><label for="a18-9">8</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a18-10" value="9" name="a18" onclick="checkPage2();"><label for="a18-10">9</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a18-11" value="10" name="a18" onclick="checkPage2();"><label for="a18-11">10</label>
+                    </li>
+                    <li>
+                        <p class="answer">Аппетит (0 - нормальный, 10 - нарушен полностью)</p>
+                        <input type="radio" id="a19-1" value="0" name="a19" onclick="checkPage2();"><label for="a19-1">0</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a19-2" value="1" name="a19" onclick="checkPage2();"><label for="a19-2">1</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a19-3" value="2" name="a19" onclick="checkPage2();"><label for="a19-3">2</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a19-4" value="3" name="a19" onclick="checkPage2();"><label for="a19-4">3</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a19-5" value="4" name="a19" onclick="checkPage2();"><label for="a19-5">4</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a19-6" value="5" name="a19" onclick="checkPage2();"><label for="a19-6">5</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a19-7" value="6" name="a19" onclick="checkPage2();"><label for="a19-7">6</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a19-8" value="7" name="a19" onclick="checkPage2();"><label for="a19-8">7</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a19-9" value="8" name="a19" onclick="checkPage2();"><label for="a19-9">8</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a19-10" value="9" name="a19" onclick="checkPage2();"><label for="a19-10">9</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a19-11" value="10" name="a19" onclick="checkPage2();"><label for="a19-11">10</label>
+                    </li>
+                    <li>
+                        <p class="answer">Пищевое поведение (0 - правильное, 10 - нарушено полностью).</p>
+                        <input type="radio" id="a20-1" value="0" name="a20" onclick="hideDiv('d20'); checkPage2();"><label for="a20-1">0</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a20-2" value="1" name="a20" onclick="showDiv('d20'); checkPage2();"><label for="a20-2">1</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a20-3" value="2" name="a20" onclick="showDiv('d20'); checkPage2();"><label for="a20-3">2</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a20-4" value="3" name="a20" onclick="showDiv('d20'); checkPage2();"><label for="a20-4">3</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a20-5" value="4" name="a20" onclick="showDiv('d20'); checkPage2();"><label for="a20-5">4</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a20-6" value="5" name="a20" onclick="showDiv('d20'); checkPage2();"><label for="a20-6">5</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a20-7" value="6" name="a20" onclick="showDiv('d20'); checkPage2();"><label for="a20-7">6</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a20-8" value="7" name="a20" onclick="showDiv('d20'); checkPage2();"><label for="a20-8">7</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a20-9" value="8" name="a20" onclick="showDiv('d20'); checkPage2();"><label for="a20-9">8</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a20-10" value="9" name="a20" onclick="showDiv('d20'); checkPage2();"><label for="a20-10">9</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a20-11" value="10" name="a20" onclick="showDiv('d20'); checkPage2();"><label for="a20-11">10</label><br>
+                        <div id="d20" style="display: none;">
+                            <p>Не ест или сильно переедает?</p>
+                            <input type="radio" id="d20-1" value="больше недоедает" name="d20"><label for="d20-1">больше недоедает</label><br>
+                            <input type="radio" id="d20-2" value="больше переедает" name="d20"><label for="d20-2">больше переедает</label>
+                        </div>
+                    </li>
+                    <li>
+                        <p class="answer"><label for='a21'>Другие нарушения (написать):</label></p>
+                        <textarea class="text" id="a21" name="a21" placeholder="Здесь можно уточнить другие нарушения"></textarea>
+                    </li>
+                    <li id="foragain" style="display: none;">
+                        <p class="answer">Оцените изменения после пройденной терапии (0 - изменений нет совсем, 10 - изменения ярко выражены)</p>
+                        <input type="radio" id="a22-1" value="0" name="a22" onclick="checkPage2();"><label for="a22-1">0</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a22-2" value="1" name="a22" onclick="checkPage2();"><label for="a22-2">1</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a22-3" value="2" name="a22" onclick="checkPage2();"><label for="a22-3">2</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a22-4" value="3" name="a22" onclick="checkPage2();"><label for="a22-4">3</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a22-5" value="4" name="a22" onclick="checkPage2();"><label for="a22-5">4</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a22-6" value="5" name="a22" onclick="checkPage2();"><label for="a22-6">5</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a22-7" value="6" name="a22" onclick="checkPage2();"><label for="a22-7">6</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a22-8" value="7" name="a22" onclick="checkPage2();"><label for="a22-8">7</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a22-9" value="8" name="a22" onclick="checkPage2();"><label for="a22-9">8</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a22-10" value="9" name="a22" onclick="checkPage2();"><label for="a22-10">9</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="a22-11" value="10" name="a22" onclick="checkPage2();"><label for="a22-11">10</label>
+                    </li>
+                </ol><br>
+                <p class="h"><b>Внимание!</b><br>Нажимая кнопку "Отправить", Вы даете согласие на обработку персональных данных и возможное использование <b>обезличенных</b> показателей в научно-исследовательских целях.</p>
+                <button onclick="backPage('page2', 'page1'); return false;">Назад</button>
+                <button type="submit" onclick="nextPage('page2', 'page3'); showResult(); return true;" id="page2button" disabled>Отправить</button>
+                <p style="display: block;" id="page2mess">* если кнопка не активна, пожалуйста, проверьте корректное заполнение всех полей на этой странице</p>
+            </section>
+            <section id="page3" style="display: none;">
+                <p class="h">Благодарим Вас за прохождение теста!</p>
+                <p>В сумме Вы набрали <span id="score"></span> баллов.</p>
+                <p>Данные были отправлены врачу.</p>
+                <br><br>
+                <button onclick="location.href='index.html'; return false;">Назад ко всем тестам</button>
+            </section>
+        </form>
+
+        <script>
+            const url = "https://script.google.com/macros/s/AKfycbzgTaqcjxlpputGw-y8JLDNaO08EtBNEMfyx4mquo_St3t9ZnVzKOQmFqxFIExGG30/exec";
+            const form = document.querySelector("#form");
+            form.addEventListener('submit', async(e) => {
+                e.preventDefault();
+
+                await fetch(url, { method: 'POST', body: new FormData(form)})
+                    .then(response => console.log('Success!', response))
+                    .catch(error => console.error('Error!', error.message));
+            });
+        </script>
+    </body>
+</html>

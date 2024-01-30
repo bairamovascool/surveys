@@ -1,0 +1,110 @@
+body {
+    padding: 1%;
+    background-color: #f3faf3;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+h1, h2, h4 {
+    text-align: center;
+}
+
+main.catalog {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 50px;
+    margin: 20px;
+}
+div.test-container {
+    align-items: center;
+    border: solid;
+    border-color: #6fb46f;
+    border-radius: 50% 20% / 10% 40%;
+    padding: 20px;
+    box-shadow:
+        inset 0 -3em 3em rgba(0, 0, 0, 0.1),
+        0 0 0 2px rgb(255, 255, 255),
+        0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+    transition: .5s;
+    cursor: pointer;
+    width: 300px;
+    font-size: 1.6em;
+    text-align: center;
+}
+div.test-container:hover {
+    transform: scale(1.1);
+}
+
+form {
+    border: solid;
+    border-color: #6fb46f;
+    border-radius: 100px;
+    padding: 20px 50px 50px;
+    box-shadow:
+        inset 0 -3em 3em rgba(0, 0, 0, 0.1),
+        0 0 0 2px rgb(255, 255, 255),
+        0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+}
+p.h {
+    font-size: large;
+}
+p.answer {
+    font-weight: bold;
+}
+.text {
+    border: none;
+    border-bottom: #6fb46f solid;
+    outline: none;
+    font-size: larger;
+}
+.long {
+    width: 350px;
+}
+button {
+    background-color: #ebf7eb;
+    border: #6fb46f solid;
+    font-size: larger;
+    box-shadow: #99ff99;
+    cursor: pointer;
+    transition: .5s;
+    border-radius: 30px;
+}
+button:hover:enabled {
+    transform: scale(1.1);
+}
+button:disabled {
+    cursor: auto;
+}
+input[type='text']:focus, input[type='email']:focus, input[type='number']:focus {
+    border-bottom: rgb(217, 243, 217) solid;
+    transition: .5s;
+}
+
+textarea {
+    resize: none;
+    width: 600px;
+    height: 300px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+input[type='date'] {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+ul.forcheckboxes {
+    margin-bottom: 1em;
+    list-style-type: none;
+}
+
+ol {
+    padding-left: 0px;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+img {
+    padding: 5px;
+    max-width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
