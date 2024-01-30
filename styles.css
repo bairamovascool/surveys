@@ -1,6 +1,9 @@
-input, label {
-    font-size: large;
+@media screen and (max-device-width:480px) {
+    label {
+        font-size: 2em;
+    }
 }
+
 body {
     padding: 1%;
     background-color: #f3faf3;
