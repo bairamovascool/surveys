@@ -30,7 +30,7 @@
     }
 }
 
-@media screen and (min-width:769px) {
+@media screen and (min-device-width:769px) {
     .text {
         border: none;
         border-bottom: #6fb46f solid;
