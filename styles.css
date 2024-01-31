@@ -1,4 +1,7 @@
 @media screen and (max-device-width:480px) {
+    * {
+        font-size: 40px;
+    }
     label {
         font-size: 40px;
     }
