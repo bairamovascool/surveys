@@ -26,12 +26,12 @@
 
     input[type='radio'] {
         transform: scale(2);
-        margin-bottom: 20px;
-        margin-right: 10px;
+        margin-bottom: 25px;
+        margin-right: 20px;
     }
 
     .long {
-        width: 500px;
+        width: 600px;
     }
 }
 
