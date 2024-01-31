@@ -1,11 +1,56 @@
 @media screen and (max-device-width:480px) {
-    label, input {
+    label {
         font-size: 40px;
+    }
+
+    p label {
+        font-size: 40px;
+    }
+
+    .text {
+        border: none;
+        border-bottom: #6fb46f solid;
+        outline: none;
+        font-size: 40px;
+    }
+
+    button {
+        background-color: #ebf7eb;
+        border: #6fb46f solid;
+        font-size: 40px;
+        box-shadow: #99ff99;
+        cursor: pointer;
+        transition: .5s;
+        border-radius: 30px;
+    }
+
+    input[type='radio'] {
+        transform: scale(2);
+        margin-bottom: 15px;
+    }
+}
+
+@media screen and (min-width:769px) {
+    .text {
+        border: none;
+        border-bottom: #6fb46f solid;
+        outline: none;
+        font-size: larger;
+    }
+
+    button {
+        background-color: #ebf7eb;
+        border: #6fb46f solid;
+        font-size: larger;
+        box-shadow: #99ff99;
+        cursor: pointer;
+        transition: .5s;
+        border-radius: 30px;
     }
 }
 
 body {
-    padding: 1%;
+    padding: 2%;
     background-color: #f3faf3;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
@@ -57,24 +102,11 @@ p.h {
 p.answer {
     font-weight: bold;
 }
-.text {
-    border: none;
-    border-bottom: #6fb46f solid;
-    outline: none;
-    font-size: larger;
-}
+
 .long {
     width: 350px;
 }
-button {
-    background-color: #ebf7eb;
-    border: #6fb46f solid;
-    font-size: larger;
-    box-shadow: #99ff99;
-    cursor: pointer;
-    transition: .5s;
-    border-radius: 30px;
-}
+
 button:hover:enabled {
     transform: scale(1.1);
 }
