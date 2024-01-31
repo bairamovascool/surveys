@@ -1,6 +1,6 @@
 @media screen and (max-device-width:480px) {
     * {
-        font-size: 40px;
+        font-size: 1.6em;
     }
     label {
         font-size: 40px;
