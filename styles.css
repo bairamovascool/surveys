@@ -26,7 +26,12 @@
 
     input[type='radio'] {
         transform: scale(2);
-        margin-bottom: 15px;
+        margin-bottom: 20px;
+        margin-right: 10px;
+    }
+
+    .long {
+        width: 500px;
     }
 }
 
@@ -46,6 +51,10 @@
         cursor: pointer;
         transition: .5s;
         border-radius: 30px;
+    }
+
+    .long {
+        width: 350px;
     }
 }
 
@@ -101,10 +110,6 @@ p.h {
 }
 p.answer {
     font-weight: bold;
-}
-
-.long {
-    width: 350px;
 }
 
 button:hover:enabled {
