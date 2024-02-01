@@ -37,7 +37,7 @@
                     document.querySelector('#fio').value.length > 3 &&
                     document.querySelector('#fiochild').value.length > 3 &&
 
-                    document.querySelectorAll('input[type="radio"]:checked').length >= 2 &&
+                    document.querySelectorAll('input[type="radio"]:checked').length >= 3 &&
 
                     document.querySelector('#bday').value &&
                     document.querySelector('#bdaychild').value &&
@@ -148,6 +148,9 @@
                 <input class="text" type="tel" id="phone" name="phone" placeholder="8XXXXXXXXXX" onkeyup="checkPage1();">
                 <br><label for="email">E-mail</label><br>
                 <input class="text" type="email" id="email" name="email" placeholder="email@mail.com" onkeyup="checkPage1();">
+                <p class="answer">Вы заполняете эту анкету впервые или повторно?</p>
+                <input type="radio" id="first" value="впервые" name="firstoragain" onclick="checkPage1();"><label for="first">впервые</label><br>
+                <input type="radio" id="again" value="повторно" name="firstoragain" onclick="checkPage1();"><label for="again">повторно</label>
                 <br><br>
                 <p class="h">На следующей странице будут показаны 29 вопросов теста. Необходимо ответить на все вопросы. Результаты теста будут отправлены врачу.</p>
                 <button onclick="location.href='index.html'; return false;">Назад ко всем тестам</button>
