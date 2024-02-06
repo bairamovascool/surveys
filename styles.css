@@ -33,6 +33,12 @@
     .long {
         width: 650px;
     }
+
+    footer {
+        display: block;
+        position: absolute;
+        bottom: 1%;
+    }
 }
 
 @media screen and (min-device-width:769px) {
@@ -55,6 +61,10 @@
 
     .long {
         width: 350px;
+    }
+
+    footer {
+        display: none;
     }
 }
 
